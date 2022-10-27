@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF=8">
+	<title>E-commerce System Homepage</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <div class="topNav">
+      <a class="active" href="index.html">Home</a>
+      <a href="inventory.html">Inventory</a>
+      <a href="customers.html">Customers</a>
+      <a href="orders.html">Orders</a>
+    </div>
+    <div id="browse" style="display: block">
+    <p><strong>Browse Customer Info</strong></p>
+    <table border="1" cellpadding="5">
+      <tr>
+        <th><a href="#">New</a></th>
+        <th></th>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>email</th>
+        <th>Phone</th>
+      </tr>
+      <tr>
+        <td><a href="#">Edit</a></td>
+        <td><a href="#">Delete</a></td>
+        <td align="right" >1</td>
+        <td>Joe</td>
+        <td>Saku</td>
+        <td>saku@gmail.com</td>
+        <td>567-123-1234</td>
+      </tr>
+      <tr>
+        <td><a href="#">Edit</a></td>
+        <td><a href="#">Delete</a></td>
+        <td align="right" >2</td>
+        <td>Mary</td>
+        <td>Chu</td>
+        <td>chu@gmail.com</td>
+        <td>567-123-1235</td>
+      </tr>
+      <tr>
+        <td><a href="#">Edit</a></td>
+        <td><a href="#">Delete</a></td>
+        <td align="right" >3</td>
+        <td>Ivan</td>
+        <td>Larrence</td>
+        <td>larrence@gmail.com</td>
+        <td>567-123-1236</td>
+      </tr>
+      <tr>
+        <td><a href="#">Edit</a></td>
+        <td><a href="#">Delete</a></td>
+        <td align="right" >4</td>
+        <td>Jack</td>
+        <td>Smith</td>
+        <td>smith@gmail.com</td>
+        <td>567-123-1237</td>
+      </tr>
+      <tr>
+        <td><a href="#">Edit</a></td>
+        <td><a href="#">Delete</a></td>
+        <td align="right" >5</td>
+        <td>Mandy</td>
+        <td>Chan</td>
+        <td>chan@gmail.com</td>
+        <td>567-123-1238</td>
+      </tr>
+      <tr>
+        <td><a href="#">Edit</a></td>
+        <td><a href="#">Delete</a></td>
+        <td align="right" >6</td>
+        <td>Eric</td>
+        <td>Trump</td>
+        <td>trump@gmail.com</td>
+        <td>567-123-1239</td>
+      </tr>
+    </table>
+    <p>&nbsp;</p>
+    </div> <!-- browse -->
+
+    <div id="insert" style="display: block">
+        <legend><strong>Add Customer</strong></legend>
+        <fieldset class="fields">
+            <label> First Name </label> <input type="text" name="first_name">
+            <label> Last Name </label> <input type="text" name="last_name"><p></p>
+            <label> email </label> <input type="text" name="email"><p></p>
+            <label> Phone </label> <input type="text" name="phone"><p></p>
+        </fieldset>
+        <input class="btn" type="submit" value="Add a Customer">
+        <input class="btn" type="button" value="Cancel">
+        <p>&nbsp;</p>
+    </div><!-- insert -->
+    
+    <div id="update" style="display: block">
+        <legend><strong>Update Item</strong></legend>
+        <fieldset class="fields">
+            <label> ID: </label> <input type="text" name="customer_id"><p></p>
+            <label> First Name </label> <input type="text" name="first_name">
+            <label> Last Name </label> <input type="text" name="last_name"><p></p>
+            <label> email </label> <input type="text" name="email"><p></p>
+            <label> Phone </label> <input type="text" name="phone"><p></p>
+        </fieldset>
+        <input class="btn" type="submit" value="Update Customer">
+        <input class="btn" type="button" value="Cancel" >
+        <p>&nbsp;</p>
+    </div><!-- update -->
+
+    <div id="delete" style="display: block">
+        <form id="deleteItem">
+        <legend><strong>Delete Item</strong></legend>
+        <fieldset class="fields">
+        <p>Are you sure you wish to delete the following customer?</p>
+        <label>ID:</label> <input type="text" name="customer_id">
+        </fieldset>
+        <input class="btn" type="submit" value="Delete customer">
+        <input class="btn" type="button" value="Cancel" >
+        </form> 
+    </div><!-- delete -->
+
+    <p>&nbsp;</p>
+    [ <a href="index.html">Home</a> | <a href="inventory.html">Inventory</a> | <a href="customers.html">Customers</a> | <a href="orders.html">Orders</a> ]
+
+</body>
+</html>
