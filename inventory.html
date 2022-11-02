@@ -52,6 +52,14 @@
     <p>&nbsp;</p>
     </div> <!-- browse -->
 
+    <div id="search" style="display: block">
+        <legend><strong>Search Item</strong></legend>
+        <fieldset class="fields">
+          <label>Keyword: </label> <input type="text" name="keyword"><p></p>
+        </fieldset>
+        <input class="btn" type="submit" value="Search">
+    </div>
+
     <div id="insert" style="display: block">
         <legend><strong>Add Item</strong></legend>
         <fieldset class="fields">
@@ -67,7 +75,15 @@
     <div id="update" style="display: block">
         <legend><strong>Update Item</strong></legend>
         <fieldset class="fields">
-            <label> ID: </label> <input type="text" name="item_id"><p></p>
+            <label> ID: </label> 
+            <select name="ID" id="ids">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
             <label> sku </label> <input type="text" name="sku"><p></p>
             <label> Country </label> <input type="text"  name="country_code"><p></p>
             <label> cost </label> <input type="text" name="cost">
@@ -82,7 +98,15 @@
         <legend><strong>Delete Item</strong></legend>
         <p>Are you sure you wish to delete the following item?</p>
         <fieldset class="fields">
-        <label>ID:</label> <input type="text" name="item_id">
+        <label>ID:</label> 
+        <select name="ID" id="ids">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
         </fieldset>
         <input class="btn" type="submit" value="Delete Item">
         <input class="btn" type="button" value="Cancel" >

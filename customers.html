@@ -22,8 +22,8 @@
         <th>ID</th>
         <th>First Name</th>
         <th>Last Name</th>
-        <th>email</th>
-        <th>Phone</th>
+        <th>email(Optional)</th>
+        <th>Phone(Optional)</th>
       </tr>
       <tr>
         <td><a href="#">Edit</a></td>
@@ -83,13 +83,21 @@
     <p>&nbsp;</p>
     </div> <!-- browse -->
 
+    <div id="search" style="display: block">
+      <legend><strong>Search Customer</strong></legend>
+      <fieldset class="fields">
+        <label>Keyword: </label> <input type="text" name="keyword"><p></p>
+      </fieldset>
+      <input class="btn" type="submit" value="Search">
+  </div>
+
     <div id="insert" style="display: block">
         <legend><strong>Add Customer</strong></legend>
         <fieldset class="fields">
             <label> First Name </label> <input type="text" name="first_name">
             <label> Last Name </label> <input type="text" name="last_name"><p></p>
-            <label> email </label> <input type="text" name="email"><p></p>
-            <label> Phone </label> <input type="text" name="phone"><p></p>
+            <label> email(Optional) </label> <input type="text" name="email"><p></p>
+            <label> Phone(Optional) </label> <input type="text" name="phone"><p></p>
         </fieldset>
         <input class="btn" type="submit" value="Add a Customer">
         <input class="btn" type="button" value="Cancel">
@@ -99,11 +107,19 @@
     <div id="update" style="display: block">
         <legend><strong>Update Item</strong></legend>
         <fieldset class="fields">
-            <label> ID: </label> <input type="text" name="customer_id"><p></p>
+            <label> ID: </label> 
+            <select name="ID" id="ids">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
             <label> First Name </label> <input type="text" name="first_name">
             <label> Last Name </label> <input type="text" name="last_name"><p></p>
-            <label> email </label> <input type="text" name="email"><p></p>
-            <label> Phone </label> <input type="text" name="phone"><p></p>
+            <label> email(Optional) </label> <input type="text" name="email"><p></p>
+            <label> Phone(Optional) </label> <input type="text" name="phone"><p></p>
         </fieldset>
         <input class="btn" type="submit" value="Update Customer">
         <input class="btn" type="button" value="Cancel" >
@@ -115,7 +131,15 @@
         <legend><strong>Delete Item</strong></legend>
         <fieldset class="fields">
         <p>Are you sure you wish to delete the following customer?</p>
-        <label>ID:</label> <input type="text" name="customer_id">
+        <label>ID:</label> 
+        <select name="ID" id="ids">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
         </fieldset>
         <input class="btn" type="submit" value="Delete customer">
         <input class="btn" type="button" value="Cancel" >

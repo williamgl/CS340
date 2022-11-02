@@ -48,6 +48,14 @@
     <p>&nbsp;</p>
     </div> <!-- browse -->
 
+    <div id="search" style="display: block">
+      <legend><strong>Search Order</strong></legend>
+      <fieldset class="fields">
+        <label>Keyword: </label> <input type="text" name="keyword"><p></p>
+      </fieldset>
+      <input class="btn" type="submit" value="Search">
+  </div>
+
     <div id="insert" style="display: block">
         <legend><strong>Add an Order</strong></legend>
         <fieldset class="fields">
@@ -63,7 +71,15 @@
     <div id="update" style="display: block">
         <legend><strong>Update Order</strong></legend>
         <fieldset class="fields">
-            <label> ID: </label> <input type="text" name="item_id"><p></p>
+            <label> ID: </label> 
+            <select name="ID" id="ids">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
             <label> Customer ID </label> <input type="text" name="customer_id"><p></p>
             <label> Item ID </label> <input type="text" name="item_id"><p></p>
             <label> quantity </label> <input type="text" name="quantity">
@@ -78,7 +94,15 @@
         <legend><strong>Delete Order</strong></legend>
         <fieldset class="fields">
         <p>Are you sure you wish to delete the following order?</p>
-        <label>ID:</label> <input type="text" name="order_id">
+        <label>ID:</label> 
+        <select name="ID" id="ids">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
         </fieldset>
         <input class="btn" type="submit" value="Delete Order">
         <input class="btn" type="button" value="Cancel" >
