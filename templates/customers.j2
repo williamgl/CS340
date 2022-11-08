@@ -3,15 +3,15 @@
 <head>
 	<meta charset="UTF=8">
 	<title>E-commerce System Homepage</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
     <div class="topNav">
-      <a class="active" href="index.html">Home</a>
-      <a href="inventory.html">Inventory</a>
-      <a href="customers.html">Customers</a>
-      <a href="orders.html">Orders</a>
+      <a class="active" href="index">Home</a>
+      <a href="inventory">Inventory</a>
+      <a href="customers">Customers</a>
+      <a href="orders">Orders</a>
     </div>
     <div id="browse" style="display: block">
     <p><strong>Browse Customer Info</strong></p>
@@ -147,7 +147,7 @@
     </div><!-- delete -->
 
     <p>&nbsp;</p>
-    [ <a href="index.html">Home</a> | <a href="inventory.html">Inventory</a> | <a href="customers.html">Customers</a> | <a href="orders.html">Orders</a> ]
+    [ <a href="index">Home</a> | <a href="inventory">Inventory</a> | <a href="customers">Customers</a> | <a href="orders">Orders</a> ]
 
 </body>
 </html>

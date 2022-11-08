@@ -42,16 +42,27 @@ my_db = mysql.connector.connect(
 # Routes
 @app.route('/')
 def root():
-    return render_template("main.j2", people=people_from_app_py)
+    return render_template("index.j2")
 
 
-@app.route('/bsg-people')
-def bsg_people():
-    query = "SELECT * FROM bsg_people;"
-    cursor = my_db.cursor(dictionary=True)
-    cursor.execute(query)
-    results = cursor.fetchall()
-    return render_template("bsg.j2", bsg_people=results)
+@app.route('/index')
+def index():
+    return render_template("index.j2")
+
+
+@app.route('/customers')
+def customers():
+    return render_template("customers.j2")
+
+
+@app.route('/inventory')
+def inventory():
+    return render_template("inventory.j2")
+
+
+@app.route('/orders')
+def orders():
+    return render_template("orders.j2")
 
 
 # Listener
