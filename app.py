@@ -57,13 +57,30 @@ def customers():
         mycursor = my_db.cursor()
         mycursor.execute("SELECT * FROM Customers INNER JOIN CustomerContactInfo ON Customers.customer_id=CustomerContactInfo.customer_id")
         myresult = mycursor.fetchall()
-        print(myresult)
         return render_template("customers.html", myresult=myresult)
+    elif request.method == 'POST':
+        first_name = request.form.get("first_name")
+        last_name = request.form.get("last_name")
+        email = request.form.get("email")
+        phone = request.form.get("phone")
+        mycursor = my_db.cursor()
+        mycursor.execute("SELECT * FROM Customers INNER JOIN CustomerContactInfo ON Customers.customer_id=CustomerContactInfo.customer_id")
+        myresult = mycursor.fetchall()
+        return render_template("customers.html", myresult=myresult)
+        
 
 
 @app.route('/inventory',methods = ['POST', 'GET'])
 def inventory():
     if (request.method == 'GET'):
+        mycursor = my_db.cursor()
+        mycursor.execute("SELECT * FROM Items")
+        myresult = mycursor.fetchall()
+        return render_template("inventory.html", myresult=myresult)
+    elif request.method == 'POST':
+        sku = request.form.get("sku")
+        country_code = request.form.get("country_code")
+        cost = request.form.get("cost")
         mycursor = my_db.cursor()
         mycursor.execute("SELECT * FROM Items")
         myresult = mycursor.fetchall()

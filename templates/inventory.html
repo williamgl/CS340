@@ -48,13 +48,15 @@
 
     <div id="insert" style="display: block">
         <legend><strong>Add Item</strong></legend>
-        <fieldset class="fields">
-            <label> sku </label> <input type="text" name="sku"><p></p>
-            <label> Country </label> <input type="text" name="country_code"><p></p>
-            <label> cost </label> <input type="text" name="cost">
-        </fieldset>
-        <input class="btn" type="submit" value="Add an Item">
-        <input class="btn" type="button" value="Cancel">
+        <form action="/inventory" method="post">
+          <fieldset class="fields">
+              <label> sku </label> <input type="text" name="sku"><p></p>
+              <label> Country </label> <input type="text" name="country_code"><p></p>
+              <label> cost </label> <input type="text" name="cost">
+          </fieldset>
+          <input class="btn" type="submit" value="Add an Item">
+          <input class="btn" type="button" value="Cancel">
+        </form>
         <p>&nbsp;</p>
     </div><!-- insert -->
     
