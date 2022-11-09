@@ -95,15 +95,25 @@ def inventory():
         mycursor = my_db.cursor()
         mycursor.execute("SELECT * FROM Items")
         myresult = mycursor.fetchall()
-        return render_template("inventory.html", myresult=myresult)
+        mycursor.execute("SELECT * FROM Countries")
+        countries = mycursor.fetchall()
+        return render_template("inventory.html", myresult=myresult, countries=countries)
     elif request.method == 'POST':
         sku = request.form.get("sku")
         country_code = request.form.get("country_code")
         cost = request.form.get("cost")
         mycursor = my_db.cursor()
+        
+        sql2 = "INSERT INTO Items (sku, country_code_of_origin, cost) VALUES (%s, %s, %s)"
+        val2= (sku,country_code,cost)
+        mycursor.execute(sql2, val2)
+        my_db.commit()
+        
         mycursor.execute("SELECT * FROM Items")
         myresult = mycursor.fetchall()
-        return render_template("inventory.html", myresult=myresult)
+        mycursor.execute("SELECT * FROM Countries")
+        countries = mycursor.fetchall()
+        return render_template("inventory.html", myresult=myresult, countries=countries)
 
 
 @app.route('/orders',methods = ['POST', 'GET'])

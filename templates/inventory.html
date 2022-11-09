@@ -51,7 +51,14 @@
         <form action="/inventory" method="post">
           <fieldset class="fields">
               <label> sku </label> <input type="text" name="sku"><p></p>
-              <label> Country </label> <input type="text" name="country_code"><p></p>
+              <label> country </label>
+              <select name="country_code" id="ids">
+                {% for country in countries%}
+                <option value={{country[2]}}>{{country[1]}}</option>
+                {%endfor%}
+              </select>
+              <br>
+              <br>
               <label> cost </label> <input type="text" name="cost">
           </fieldset>
           <input class="btn" type="submit" value="Add an Item">
