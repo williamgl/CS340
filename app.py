@@ -122,7 +122,48 @@ def orders():
         mycursor = my_db.cursor()
         mycursor.execute("SELECT * FROM Orders")
         myresult = mycursor.fetchall()
-        return render_template("orders.html", myresult=myresult)
+        
+        mycursor.execute("SELECT * FROM Customers")
+        customers = mycursor.fetchall()
+        
+        mycursor.execute("SELECT * FROM Items")
+        items = mycursor.fetchall()
+        
+        mycursor.execute("SELECT * FROM Countries")
+        countries = mycursor.fetchall()
+        return render_template("orders.html", myresult=myresult,customers=customers,items=items, countries=countries)
+    elif request.method == 'POST':
+        mycursor = my_db.cursor()
+        customer_id = request.form.get("customer_id")
+        item_id = request.form.get("item_id")
+        quantity = request.form.get("quantity")
+        country_code = request.form.get("country_code")
+        item_id = int(item_id)
+        
+        mycursor.execute("SELECT cost FROM Items WHERE item_id = %s", (item_id,))
+        item = mycursor.fetchall()
+        item_cost = item[0][0]
+        print(item_cost)
+        
+        total_cost = int(item_cost) * int(quantity)
+        
+        sql2 = "INSERT INTO Orders (customer_id, total_cost, country_code_of_order) VALUES (%s, %s, %s)"
+        val2= (customer_id, total_cost,country_code)
+        mycursor.execute(sql2, val2)
+        my_db.commit()
+        
+        mycursor.execute("SELECT * FROM Orders")
+        myresult = mycursor.fetchall()
+        
+        mycursor.execute("SELECT * FROM Customers")
+        customers = mycursor.fetchall()
+        
+        mycursor.execute("SELECT * FROM Items")
+        items = mycursor.fetchall()
+        
+        mycursor.execute("SELECT * FROM Countries")
+        countries = mycursor.fetchall()
+        return render_template("orders.html", myresult=myresult,customers=customers,items=items, countries=countries)
     
 
 

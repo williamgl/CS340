@@ -46,13 +46,33 @@
 
     <div id="insert" style="display: block">
         <legend><strong>Add an Order</strong></legend>
-        <fieldset class="fields">
-            <label> Customer ID </label> <input type="text" name="customer_id"><p></p>
-            <label> Item ID </label> <input type="text" name="item_id"><p></p>
+        <form action="/orders" method="post">
+          <fieldset class="fields">
+            <label> Customer ID </label> 
+            <select name="customer_id" id="ids">
+              {% for customer in customers%}
+              <option value={{customer[0]}}>{{customer[1]}} {{customer[2]}}</option>
+              {%endfor%}
+            </select>
+            <label> Item ID </label> 
+            <select name="item_id" id="ids">
+              {% for item in items%}
+              <option value={{item[0]}}>{{item[1]}}</option>
+              {%endfor%}
+            </select>
+            <label> Countries </label> 
+            <select name="country_code" id="ids">
+              {% for country in countries%}
+              <option value={{country[2]}}>{{country[1]}}</option>
+              {%endfor%}
+            </select>
+            <br>
+            <br>
             <label> quantity </label> <input type="text" name="quantity">
-        </fieldset>
+          </fieldset>
         <input class="btn" type="submit" value="Add an Order">
         <input class="btn" type="button" value="Cancel">
+      </form>
         <p>&nbsp;</p>
     </div><!-- insert -->
     
