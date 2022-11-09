@@ -51,9 +51,14 @@ def index():
     return render_template("index.html")
 
 
-@app.route('/customers')
+@app.route('/customers',methods = ['POST', 'GET'])
 def customers():
-    return render_template("customers.html")
+    if (request.method == 'GET'):
+        mycursor = my_db.cursor()
+        mycursor.execute("SELECT * FROM Customers INNER JOIN CustomerContactInfo ON Customers.customer_id=CustomerContactInfo.customer_id")
+        myresult = mycursor.fetchall()
+        print(myresult)
+        return render_template("customers.html", myresult=myresult)
 
 
 @app.route('/inventory',methods = ['POST', 'GET'])
@@ -65,7 +70,7 @@ def inventory():
         return render_template("inventory.html", myresult=myresult)
 
 
-@app.route('/orders')
+@app.route('/orders',methods = ['POST', 'GET'])
 def orders():
     if (request.method == 'GET'):
         mycursor = my_db.cursor()

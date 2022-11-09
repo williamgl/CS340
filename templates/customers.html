@@ -25,60 +25,17 @@
         <th>email(Optional)</th>
         <th>Phone(Optional)</th>
       </tr>
+      {% for item in myresult%}
       <tr>
         <td><a href="#">Edit</a></td>
         <td><a href="#">Delete</a></td>
-        <td align="right" >1</td>
-        <td>Joe</td>
-        <td>Saku</td>
-        <td>saku@gmail.com</td>
-        <td>567-123-1234</td>
+        <td align="right" >{{item[0]}}</td>
+        <td>{{item[1]}}</td>
+        <td>{{item[2]}}</td>
+        <td>{{item[6]}}</td>
+        <td>{{item[7]}}</td>
       </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >2</td>
-        <td>Mary</td>
-        <td>Chu</td>
-        <td>chu@gmail.com</td>
-        <td>567-123-1235</td>
-      </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >3</td>
-        <td>Ivan</td>
-        <td>Larrence</td>
-        <td>larrence@gmail.com</td>
-        <td>567-123-1236</td>
-      </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >4</td>
-        <td>Jack</td>
-        <td>Smith</td>
-        <td>smith@gmail.com</td>
-        <td>567-123-1237</td>
-      </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >5</td>
-        <td>Mandy</td>
-        <td>Chan</td>
-        <td>chan@gmail.com</td>
-        <td>567-123-1238</td>
-      </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >6</td>
-        <td>Eric</td>
-        <td>Trump</td>
-        <td>trump@gmail.com</td>
-        <td>567-123-1239</td>
-      </tr>
+      {% endfor %}
     </table>
     <p>&nbsp;</p>
     </div> <!-- browse -->
