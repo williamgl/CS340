@@ -8,10 +8,10 @@
 
 <body>
     <div class="topNav">
-        <a class="active" href="index">Home</a>
-        <a href="inventory">Inventory</a>
-        <a href="customers">Customers</a>
-        <a href="orders">Orders</a>
+      <a class="active" href="index">Home</a>
+      <a href="inventory">Inventory</a>
+      <a href="customers">Customers</a>
+      <a href="orders">Orders</a>
     </div>
     <div id="browse" style="display: block">
     <p><strong>Browse Items</strong></p>
@@ -20,60 +20,44 @@
         <th><a href="#">New</a></th>
         <th></th>
         <th>ID</th>
-        <th>sku</th>
-        <th>Country</th>
-        <th>cost</th>
+        <th>Customer ID</th>
+        <th>total cost</th>
       </tr>
+      {% for item in myresult%}
       <tr>
         <td><a href="#">Edit</a></td>
         <td><a href="#">Delete</a></td>
-        <td align="right" >1</td>
-        <td>Sho/US-</td>
-        <td align="right" >1</td>
-        <td>33.99</td>
+        <td align="right" >{{item[0]}}</td>
+        <td align="right" >{{item[1]}}</td>
+        <td>${{item[2]}}</td>
       </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >2</td>
-        <td>Clo/Lar</td>
-        <td align="right" >1</td>
-        <td >50.99</td>
-      </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >3</td>
-        <td>PC/Int</td>
-        <td align="right" >1</td>
-        <td>1250.99</td>
-      </tr>
+      {%endfor%}
     </table>
     <p>&nbsp;</p>
     </div> <!-- browse -->
 
     <div id="search" style="display: block">
-        <legend><strong>Search Item</strong></legend>
-        <fieldset class="fields">
-          <label>Keyword: </label> <input type="text" name="keyword"><p></p>
-        </fieldset>
-        <input class="btn" type="submit" value="Search">
-    </div>
+      <legend><strong>Search Order</strong></legend>
+      <fieldset class="fields">
+        <label>Keyword: </label> <input type="text" name="keyword"><p></p>
+      </fieldset>
+      <input class="btn" type="submit" value="Search">
+  </div>
 
     <div id="insert" style="display: block">
-        <legend><strong>Add Item</strong></legend>
+        <legend><strong>Add an Order</strong></legend>
         <fieldset class="fields">
-            <label> sku </label> <input type="text" name="sku"><p></p>
-            <label> Country </label> <input type="text" name="country_code"><p></p>
-            <label> cost </label> <input type="text" name="cost">
+            <label> Customer ID </label> <input type="text" name="customer_id"><p></p>
+            <label> Item ID </label> <input type="text" name="item_id"><p></p>
+            <label> quantity </label> <input type="text" name="quantity">
         </fieldset>
-        <input class="btn" type="submit" value="Add an Item">
+        <input class="btn" type="submit" value="Add an Order">
         <input class="btn" type="button" value="Cancel">
         <p>&nbsp;</p>
     </div><!-- insert -->
     
     <div id="update" style="display: block">
-        <legend><strong>Update Item</strong></legend>
+        <legend><strong>Update Order</strong></legend>
         <fieldset class="fields">
             <label> ID: </label> 
             <select name="ID" id="ids">
@@ -84,20 +68,20 @@
               <option value="5">5</option>
               <option value="6">6</option>
             </select>
-            <label> sku </label> <input type="text" name="sku"><p></p>
-            <label> Country </label> <input type="text"  name="country_code"><p></p>
-            <label> cost </label> <input type="text" name="cost">
+            <label> Customer ID </label> <input type="text" name="customer_id"><p></p>
+            <label> Item ID </label> <input type="text" name="item_id"><p></p>
+            <label> quantity </label> <input type="text" name="quantity">
         </fieldset>
-        <input class="btn" type="submit" value="Update Item">
+        <input class="btn" type="submit" value="Update Order">
         <input class="btn" type="button" value="Cancel" >
         <p>&nbsp;</p>
     </div><!-- update -->
 
     <div id="delete" style="display: block">
-        <form id="deleteItem">
-        <legend><strong>Delete Item</strong></legend>
-        <p>Are you sure you wish to delete the following item?</p>
+        <form id="deleteOrder">
+        <legend><strong>Delete Order</strong></legend>
         <fieldset class="fields">
+        <p>Are you sure you wish to delete the following order?</p>
         <label>ID:</label> 
         <select name="ID" id="ids">
           <option value="1">1</option>
@@ -108,7 +92,7 @@
           <option value="6">6</option>
         </select>
         </fieldset>
-        <input class="btn" type="submit" value="Delete Item">
+        <input class="btn" type="submit" value="Delete Order">
         <input class="btn" type="button" value="Cancel" >
         </form> 
     </div><!-- delete -->

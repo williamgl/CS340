@@ -1,4 +1,4 @@
-from flask import Flask, render_template, json
+from flask import Flask, render_template, json, request
 import os
 
 import mysql.connector
@@ -35,38 +35,48 @@ people_from_app_py = [
 my_db = mysql.connector.connect(
     host="127.0.0.1",
     user="root",
-    database="bsg"
+    password="rootadmin",
+    database="ecommerce"
 )
 
 
 # Routes
 @app.route('/')
 def root():
-    return render_template("index.j2")
+    return render_template("index.html")
 
 
 @app.route('/index')
 def index():
-    return render_template("index.j2")
+    return render_template("index.html")
 
 
 @app.route('/customers')
 def customers():
-    return render_template("customers.j2")
+    return render_template("customers.html")
 
 
-@app.route('/inventory')
+@app.route('/inventory',methods = ['POST', 'GET'])
 def inventory():
-    return render_template("inventory.j2")
+    if (request.method == 'GET'):
+        mycursor = my_db.cursor()
+        mycursor.execute("SELECT * FROM Items")
+        myresult = mycursor.fetchall()
+        return render_template("inventory.html", myresult=myresult)
 
 
 @app.route('/orders')
 def orders():
-    return render_template("orders.j2")
+    if (request.method == 'GET'):
+        mycursor = my_db.cursor()
+        mycursor.execute("SELECT * FROM Orders")
+        myresult = mycursor.fetchall()
+        return render_template("orders.html", myresult=myresult)
+    
 
 
 # Listener
 if __name__ == "__main__":
     # port = int(os.environ.get('PORT', 14285))
     # app.run(port=port)
-    app.run(port=14285, debug=True)
+    app.run(port=8808, debug=True)
