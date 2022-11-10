@@ -138,7 +138,7 @@
 		<form id="editCustomer" action="/edit_customer/{{customers[0].customer_id}}" method="post">
 			<legend><strong>Edit Customer Info</strong></legend>
 			<fieldset>
-				<input type="hidden" value="{{customers[0].customer_id}}" class="form-control" id="customerID" name="customerID" required>
+				<input type="hidden" value="{{customers[0].customer_id}}" class="form-control" id="customer_id" name="customer_id" required>
 				<label for="make">first name:</label>
 				<input type="text" class="form-control" id="first_name" name="first_name" pattern="[A-Za-z]{1,}" placeholder="{{customers[0].first_name}}" required>
 				<label for="model">last name:</label>

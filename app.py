@@ -29,7 +29,11 @@ def index():
 def customers():
     if request.method == 'GET':
         cursor = mysql.connection.cursor()
-        cursor.execute("SELECT Customers.customer_id, first_name, last_name, email, phone FROM Customers INNER JOIN Customer_Info ON Customers.customer_id=Customer_Info.customer_id;")
+        cursor.execute("SELECT Customers.customer_id AS 'Customer ID',"
+                       " first_name AS 'First Name',"
+                       " last_name AS 'Last Name',"
+                       " email AS Email, phone AS Phone "
+                       "FROM Customers INNER JOIN Customer_Info ON Customers.customer_id=Customer_Info.customer_id;")
         result = cursor.fetchall()
         cursor.close()
         return render_template("customers.j2", customers=result)
@@ -111,16 +115,52 @@ def edit_customer(customer_id):
             # redirect back to customers page
             return redirect("/customers")
 
-"""
+
 @app.route('/inventory', methods=['POST', 'GET'])
 def inventory():
     if request.method == 'GET':
         cursor = mysql.connection.cursor()
-        cursor.execute("SELECT * FROM Items")
+        cursor.execute("SELECT Items.item_id, sku, cost, location_name, quantity "
+                       "FROM Items INNER JOIN Items_Locations ON Items.item_id=Items_Locations.item_id "
+                       "INNER JOIN Locations ON Locations.location_id=Items_Locations.location_id;")
         result = cursor.fetchall()
-        return render_template("inventory.j2", item=result)
+        cursor.close()
+        return render_template("inventory.j2", items=result)
+    if request.method == "POST":
+        # fire off if user presses the Add Person button
+        if request.form.get("Add_Item"):
+            # grab user form inputs
+            sku = request.form["sku"]
+            cost = request.form["cost"]
+            quantity = request.form["quantity"]
+            location_id = request.form["location"]
+
+            cur = mysql.connection.cursor()
+
+            # find country_id based on location_id
+            query = "SELECT * FROM Locations WHERE location_id=3;"
+            cur.exucute(query)
+            country_id = cur.fetchall()
+            return str(country_id)
+
+            query1 = "INSERT INTO Items (sku, country_id, cost) VALUES ('%s', %d, '%s');"
+            cur.execute(query1 % (sku, country_id, cost))
+            mysql.connection.commit()
+
+            query2 = "SELECT item_id FROM Items WHERE sku='%s';"
+            cur.execute(query2 % (sku, ))
+            item_id = cur.fetchone()['item_id']
+
+            query3 = "INSERT INTO Items_Locations (item_id, location_id, quantity) VALUES (%d, %d, %d);"
+            cur.execute(query3 % (item_id, location_id, quantity))
+            mysql.connection.commit()
+            cur.close()
+
+            # redirect back to customers page
+            return redirect("/inventory")
 
 
+"""
 @app.route('/orders', methods=['POST', 'GET'])
 def orders():
     if request.method == 'GET':

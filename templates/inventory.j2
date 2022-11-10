@@ -2,101 +2,175 @@
 <html>
 <head>
 	<meta charset="UTF=8">
-	<title>E-commerce System Homepage</title>
+	<title>Inventory</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+	<script language="JavaScript">
+	function showform(dowhat) {
+		/*
+		 * four DIVS: browse, insert, update, delete
+		 * this function sets one visible the others not
+		 */
+		if(dowhat == 'insert') {
+			document.getElementById('browse').style.display = 'none';
+			document.getElementById('insert').style.display = 'block';
+			document.getElementById('edit').style.display = 'none';
+			document.getElementById('delete').style.display = 'none';
+		} else if(dowhat == 'update') {
+			document.getElementById('browse').style.display = 'none';
+			document.getElementById('insert').style.display = 'none';
+			document.getElementById('edit').style.display = 'block';
+			document.getElementById('delete').style.display = 'none';
+		} else if(dowhat == 'delete') {
+			document.getElementById('browse').style.display = 'none';
+			document.getElementById('insert').style.display = 'none';
+			document.getElementById('edit').style.display = 'none';
+			document.getElementById('delete').style.display = 'block';
+		} else if(dowhat == 'all') {
+			document.getElementById('browse').style.display = 'block';
+			document.getElementById('insert').style.display = 'block';
+			document.getElementById('edit').style.display = 'block';
+			document.getElementById('delete').style.display = 'block';
+		} else { //by default display browse
+			document.getElementById('browse').style.display = 'block';
+			document.getElementById('insert').style.display = 'none';
+			document.getElementById('edit').style.display = 'none';
+			document.getElementById('delete').style.display = 'none';
+		}
+	}
+
+	function newItem() {
+		showform('insert');
+	}
+
+	function updateItem(pid) {
+		showform('update');
+	}
+
+	function deleteItem(pid) {
+		showform('delete');
+	}
+
+	function browseItem() {
+		showform('browse');
+	}
+
+	function showAll() {
+		showform('all');
+	}
+	</script>
+
 </head>
 
-<body>
+<body onload="browseItem()"">
     <div class="topNav">
         <a class="active" href="index">Home</a>
         <a href="inventory">Inventory</a>
         <a href="customers">Customers</a>
         <a href="orders">Orders</a>
     </div>
-    <div id="browse" style="display: block">
-    <p><strong>Browse Items</strong></p>
+	<h1>Inventory</h1>
+
+	<div id="browse">
+
+        <div id="search" style="display: block">
+            <legend><strong>Search Item</strong></legend>
+            <fieldset class="fields">
+              <label>Keyword: </label> <input type="text" name="keyword"><p></p>
+              <input class="btn" type="submit" value="Search">
+            </fieldset>
+        </div>
+        <p></p>
+
+        <p><a href="#" onClick="newItem()">Add New Item</a> </p>
+        <p></p>
+
     <table border="1" cellpadding="5">
-      <tr>
-        <th><a href="#">New</a></th>
-        <th></th>
-        <th>ID</th>
-        <th>sku</th>
-        <th>Country</th>
-        <th>cost</th>
-      </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-          <td><a href='#'>Delete</a></td>
-        <td align="right">{{item[0]}}</td>
-        <td>{{item[1]}}</td>
-        <td align="right">{{item[2]}}</td>
-        <td>${{item[3]}}</td>
-      </tr>
-         {% endfor %}
+            <!-- Access data tuple passed from app.py -->
+            {% if items %}
+			    <thead>
+				    <tr>
+					    <!-- Iterate through each key in the first entry to get the column name -->
+                        {% for key in items[0].keys() %}
+                        <!-- Create a <th> tag with the key inside of it, this will be our header row -->
+					    <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+                        <!-- End of this for loop -->
+                        {% endfor %}
+                    </tr>
+				<tbody>
+					<!-- Now, iterate through every item in data -->{% for item in items %}
+					    <tr>
+						    <!-- Then iterate through every key in the current item dictionary -->
+                            {% for key in item.keys() %}
+						    <!-- Create a <td> element with the value of that key in it -->
+						    <td> {{item[key]}} </td>
+                            {% endfor %}
+                            <!-- Create our edit/delete buttons -->
+						    <td><a href="edit_item/{{item.item_id}}" class="btn btn-default">Edit</a></td>
+						    <td><a href="delete_item/{{item.item_id}}" class="btn btn-default">Delete</a></td>
+					    </tr>
+                        {% endfor %}
+                {% endif %}
     </table>
     <p>&nbsp;</p>
     </div> <!-- browse -->
 
-    <div id="search" style="display: block">
-        <legend><strong>Search Item</strong></legend>
-        <fieldset class="fields">
-          <label>Keyword: </label> <input type="text" name="keyword"><p></p>
-        </fieldset>
-        <input class="btn" type="submit" value="Search">
-    </div>
+	<div id="insert">
+		<!-- form to INSERT new data into Items-->
+		<form id="insertItem" action="/inventory" method="post">
+			<legend><strong>Add Item</strong></legend>
+			<fieldset>
+                <!-- placeholder shows ghost text, required forces an input, pattern forces input adherence -->
+				<label for="make">Sku: </label>
+				<input type="text" class="form-control" id="sku" name="sku">
 
-    <div id="insert" style="display: block">
-        <legend><strong>Add Item</strong></legend>
-        <fieldset class="fields">
-            <label> sku </label> <input type="text" name="sku"><p></p>
-            <label> Country </label> <input type="text" name="country_code"><p></p>
-            <label> cost </label> <input type="text" name="cost">
-        </fieldset>
-        <input class="btn" type="submit" value="Add an Item">
-        <input class="btn" type="button" value="Cancel">
-        <p>&nbsp;</p>
-    </div><!-- insert -->
-    
-    <div id="update" style="display: block">
-        <legend><strong>Update Item</strong></legend>
-        <fieldset class="fields">
-            <label> ID: </label> 
-            <select name="ID" id="ids">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-            </select>
-            <label> sku </label> <input type="text" name="sku"><p></p>
-            <label> Country </label> <input type="text"  name="country_code"><p></p>
-            <label> cost </label> <input type="text" name="cost">
-        </fieldset>
-        <input class="btn" type="submit" value="Update Item">
-        <input class="btn" type="button" value="Cancel" >
-        <p>&nbsp;</p>
-    </div><!-- update -->
+				<label for="model">Cost: </label>
+				<input type="text" class="form-control" id="cost" name="cost">
+                <p></p>
+				<label for="year">Quantity: </label>
+                <input type="text" class="form-control" id="quantity" name="quantity">
 
-    <div id="delete" style="display: block">
-        <form id="deleteItem">
-        <legend><strong>Delete Item</strong></legend>
-        <p>Are you sure you wish to delete the following item?</p>
-        <fieldset class="fields">
-        <label>ID:</label> 
-        <select name="ID" id="ids">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-        </select>
-        </fieldset>
-        <input class="btn" type="submit" value="Delete Item">
-        <input class="btn" type="button" value="Cancel" >
-        </form> 
-    </div><!-- delete -->
+				<label for="color">Location: </label>
+				<select class="form-control" id="location" name="location" pattern="[0-4]{1}" placeholder="" required>
+				<!-- these are hard coded, but you can add code to make this dynamic -->
+					<option value="0">&nbsp;</option>
+					<option value="1">Rancho Cucamonga</option>
+					<option value="2">Edmonton</option>
+					<option value="3">Irvine</option>
+				</select>
+            </fieldset>
+
+            <!-- Create 'Add Item' and 'Cancel' buttons -->
+			<input type="submit" value="Add Item" name="Add_Item" class="btn btn-primary" style="margin:.5rem;">
+			<input class="btn" type="button" value="Cancel" onClick="browseItem()">
+        </form>
+	</div><!--insert-->
+
+    <div id="edit">
+		<!-- form to edit data in Items-->
+		<form id="editItem" action="/edit_item/{{items[0].item_id}}" method="post">
+			<legend><strong>Edit Item Info</strong></legend>
+			<fieldset>
+				<input type="hidden" value="{{items[0].item_id}}" class="form-control" id="item_id" name="item_id" required>
+				<label for="make">Sku: </label>
+				<input type="text" class="form-control" id="sku" name="sku" placeholder="{{items[0].sku}}" required>
+				<label for="model">Cost: </label>
+				<input type="text" class="form-control" id="cost" name="cost" placeholder="{{items[0].cost}}" required>
+				<label for="year">Quantity: </label>
+				<p></p>
+                <input type="text" class="form-control" id="quantity" name="quantity" placeholder="{{items[0].quantity}}" required>
+				<label for="color">Location: </label>
+				<select class="form-control" id="location" name="location" pattern="[0-4]{1}" placeholder="" required>
+				<!-- these are hard coded, but you can add code to make this dynamic -->
+					<option value="0">&nbsp;</option>
+					<option value="1">Rancho Cucamonga</option>
+					<option value="2">Edmonton</option>
+					<option value="3">Irvine</option>
+				</select>
+			</fieldset>
+			    <input type="submit" value="Update Item" name="Update_Item" class="btn btn-primary" style="margin:.5rem;">
+				<input class="btn" type="button" value="Cancel" onClick="browseItem()" style="margin:.5rem;">
+        </form>
+	</div><!--edit-->
 
     <p>&nbsp;</p>
     [ <a href="index">Home</a> | <a href="inventory">Inventory</a> | <a href="customers">Customers</a> | <a href="orders">Orders</a> ]
