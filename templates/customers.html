@@ -18,8 +18,6 @@
     <p><strong>Browse Customer Info</strong></p>
     <table border="1" cellpadding="5">
       <tr>
-        <th><a href="#">New</a></th>
-        <th></th>
         <th>ID</th>
         <th>First Name</th>
         <th>Last Name</th>
@@ -28,8 +26,6 @@
       </tr>
       {% for item in myresult%}
       <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
         <td align="right" >{{item[0]}}</td>
         <td>{{item[1]}}</td>
         <td>{{item[2]}}</td>
