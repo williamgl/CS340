@@ -158,18 +158,7 @@ def orders():
         # mycursor.execute(sql2, val2)
         # my_db.commit()
         
-        mycursor.execute("SELECT * FROM Orders")
-        myresult = mycursor.fetchall()
-        
-        mycursor.execute("SELECT * FROM Customers")
-        customers = mycursor.fetchall()
-        
-        mycursor.execute("SELECT * FROM Items")
-        items = mycursor.fetchall()
-        
-        mycursor.execute("SELECT * FROM Countries")
-        countries = mycursor.fetchall()
-        return render_template("orders.html", myresult=myresult,customers=customers,items=items, countries=countries)
+        return redirect(request.url)
     
 @app.route('/ordersToitems',methods = ['POST', 'GET'])
 def ordersToitems():
@@ -191,29 +180,60 @@ def ordersToitems():
         countries = mycursor.fetchall()
         return render_template("ordersToitems.html", myresult=myresult,orders=orders,customers=customers,items=items, countries=countries)
     elif (request.method == 'POST'):
-        mycursor = my_db.cursor()
-        order_id = request.form.get("order_id")
-        item_id = request.form.get("item_id")
-        quantity = request.form.get("quantity")
-        item_id = int(item_id)
+        if (request.form.get("_method") == "put"):
+            mycursor = my_db.cursor()
+            order_id = request.form.get("order_id")
+            item_id = request.form.get("item_id")
+            quantity = request.form.get("quantity")
+            
+            sql1 = "UPDATE OrdersToItems SET quantity_of_item = %s WHERE order_id = %s AND item_id = %s"
+            val1= (quantity, order_id,item_id)
+            mycursor.execute(sql1, val1)
+            my_db.commit()
+            
+            mycursor.execute("SELECT cost FROM Items WHERE item_id = %s", (item_id,))
+            item = mycursor.fetchall()
+            item_cost = item[0][0]
+            item_total_cost = int(item_cost) * int(quantity)
+            
+            sql2 = "UPDATE Orders SET total_cost = total_cost + %s WHERE order_id = %s"
+            val2= (item_total_cost, order_id)
+            mycursor.execute(sql2, val2)
+            my_db.commit()
+            return redirect(request.url)
+        elif (request.form.get("_method") == "delete"):
+            mycursor = my_db.cursor()
+            
+            order_item_id = request.form.get("order_item_id")
+            sql = "DELETE FROM OrdersToItems WHERE order_to_item_id=%s"
+            val = (order_item_id, )
+            mycursor.execute(sql, val)
+            my_db.commit()
+            return redirect(request.url)
+        else:
+            mycursor = my_db.cursor()
+            order_id = request.form.get("order_id")
+            item_id = request.form.get("item_id")
+            quantity = request.form.get("quantity")
+            item_id = int(item_id)
+            
+            sql1 = "INSERT INTO OrdersToItems (item_id, order_id, quantity_of_item) VALUES (%s, %s, %s)"
+            val1= (item_id, order_id,quantity)
+            mycursor.execute(sql1, val1)
+            my_db.commit()
+            
+            mycursor.execute("SELECT cost FROM Items WHERE item_id = %s", (item_id,))
+            item = mycursor.fetchall()
+            item_cost = item[0][0]
+            item_total_cost = int(item_cost) * int(quantity)
+            
+            sql2 = "UPDATE Orders SET total_cost = total_cost + %s WHERE order_id = %s"
+            val2= (item_total_cost, order_id)
+            mycursor.execute(sql2, val2)
+            my_db.commit()
+            
+            return redirect(request.url)
         
-        sql1 = "INSERT INTO OrdersToItems (item_id, order_id, quantity_of_item) VALUES (%s, %s, %s)"
-        val1= (item_id, order_id,quantity)
-        mycursor.execute(sql1, val1)
-        my_db.commit()
-        
-        mycursor.execute("SELECT cost FROM Items WHERE item_id = %s", (item_id,))
-        item = mycursor.fetchall()
-        item_cost = item[0][0]
-        item_total_cost = int(item_cost) * int(quantity)
-        
-        sql2 = "UPDATE Orders SET total_cost = total_cost + %s WHERE order_id = %s"
-        val2= (item_total_cost, order_id)
-        mycursor.execute(sql2, val2)
-        my_db.commit()
-        
-        
-        return redirect(request.url)
     
 
 # Listener

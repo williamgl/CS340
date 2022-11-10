@@ -74,28 +74,24 @@
     </div><!-- insert -->
     
     <div id="update" style="display: block">
-        <legend><strong>Update Order</strong></legend>
-        <form action="/ordersToitems" method="put">
-          <fieldset class="fields">
-            <label> Order ID </label> 
-            <select name="order_id" id="ids">
-              {% for order in orders%}
-              <option value={{order[0]}}>{{order[0]}}</option>
-              {%endfor%}
-            </select>
-            <label> Customer ID </label> 
-            <select name="customer_id" id="ids">
-              {% for customer in customers%}
-              <option value={{customer[0]}}>{{customer[1]}} {{customer[2]}}</option>
-              {%endfor%}
-            </select>
-            <label> Countries </label> 
-            <select name="country_code" id="ids">
-              {% for country in countries%}
-              <option value={{country[2]}}>{{country[1]}}</option>
-              {%endfor%}
-            </select>
-          </fieldset>
+        <legend><strong>Update Item to Order</strong></legend>
+        <form action="/ordersToitems" method="post">
+            <input type="hidden" name="_method" value="put" />
+            <fieldset class="fields">
+                <label> Order ID </label> 
+                <select name="order_id" id="ids">
+                {% for order in orders%}
+                <option value={{order[0]}}>{{order[0]}}</option>
+                {%endfor%}
+                </select>
+                <label> Item ID </label> 
+                <select name="item_id" id="ids">
+                {% for item in items%}
+                <option value={{item[0]}}>{{item[1]}}</option>
+                {%endfor%}
+                </select>
+                <label> quantity </label> <input type="text" name="quantity">
+            </fieldset>
           <input class="btn" type="submit" value="Update Order">
           <input class="btn" type="button" value="Cancel" >
         </form>
@@ -103,23 +99,23 @@
     </div><!-- update -->
 
     <div id="delete" style="display: block">
-        <form id="deleteOrder">
+        
         <legend><strong>Delete Order</strong></legend>
         <fieldset class="fields">
         <p>Are you sure you wish to delete the following order?</p>
-        <label>ID:</label> 
-        <select name="ID" id="ids">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-        </select>
+        <form action="/ordersToitems" method="post">
+            <input type="hidden" name="_method" value="delete" />
+            <label> ID </label> 
+            <select name="order_item_id" id="ids">
+            {% for order_item_id in myresult%}
+            <option value={{order_item_id[0]}}>{{order_item_id[0]}}</option>
+            {%endfor%}
+            </select>
         </fieldset>
         <input class="btn" type="submit" value="Delete Order">
         <input class="btn" type="button" value="Cancel" >
-        </form> 
+        </form>
+    
     </div><!-- delete -->
 
     <p>&nbsp;</p>
