@@ -48,7 +48,7 @@
 
         <div id="edit">
             <!-- form to edit data in Items-->
-            <form id="editCustomer" action="/edit_item/{{data[0].item_id}}" method="post">
+            <form id="editCustomer" action="/edit_item/{{data[0].item_id}}/{{data[0].location_id}}" method="post">
                 <legend><strong>Edit Item</strong></legend>
                 <p></p>
                 <fieldset>
@@ -71,7 +71,7 @@
                         <option value="3">Irvine</option>
                     </select>
                 </fieldset>
-                <input type="submit" value="Edit Item" name="Edit_Customer" class="btn btn-primary" style="margin:.5rem;">
+                <input type="submit" value="Edit Item" name="Edit_Item" class="btn btn-primary" style="margin:.5rem;">
                 <a href='/inventory'><input class="btn" type="button" value="Cancel"></a>
             </form>
 
