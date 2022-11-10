@@ -1,73 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF=8">
-	<title>Customers</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-	<script language="JavaScript">
-	function showform(dowhat) {
-		/*
-		 * four DIVS: browse, insert, update, delete
-		 * this function sets one visible the others not
-		 */
-		if(dowhat == 'insert') {
-			document.getElementById('browse').style.display = 'none';
-			document.getElementById('insert').style.display = 'block';
-			document.getElementById('edit').style.display = 'none';
-			document.getElementById('delete').style.display = 'none';
-		} else if(dowhat == 'update') {
-			document.getElementById('browse').style.display = 'none';
-			document.getElementById('insert').style.display = 'none';
-			document.getElementById('edit').style.display = 'block';
-			document.getElementById('delete').style.display = 'none';
-		} else if(dowhat == 'delete') {
-			document.getElementById('browse').style.display = 'none';
-			document.getElementById('insert').style.display = 'none';
-			document.getElementById('edit').style.display = 'none';
-			document.getElementById('delete').style.display = 'block';
-		} else if(dowhat == 'all') {
-			document.getElementById('browse').style.display = 'block';
-			document.getElementById('insert').style.display = 'block';
-			document.getElementById('edit').style.display = 'block';
-			document.getElementById('delete').style.display = 'block';
-		} else { //by default display browse
-			document.getElementById('browse').style.display = 'block';
-			document.getElementById('insert').style.display = 'none';
-			document.getElementById('edit').style.display = 'none';
-			document.getElementById('delete').style.display = 'none';
-		}
-	}
-
-	function newCustomer() {
-		showform('insert');
-	}
-
-	function updateCustomer(pid) {
-		showform('update');
-	}
-
-	function deleteCustomer(pid) {
-		showform('delete');
-	}
-
-	function browseCustomer() {
-		showform('browse');
-	}
-
-	function showAll() {
-		showform('all');
-	}
-	</script>
-
-</head>
-
-<body onload="browseCustomer()">
-	<div class="topNav">
-	  <a class="active" href="index">Home</a>
-	  <a href="inventory">Inventory</a>
-	  <a href="customers">Customers</a>
-	  <a href="orders">Orders</a>
-	</div>
+{% extends "layout.html" %}
+{% block content %}
 	<h1>Items In Orders</h1>
 	<div id="browse">
 		<table border="1" cellpadding="5">
@@ -126,13 +58,4 @@
 			<input class="btn" type="button" value="Cancel" onClick="browseCustomer()">
         </form>
 	</div><!--insert-->
-
-
-	
-
-
-    <p>&nbsp;</p>
-    [ <a href="index">Home</a> | <a href="inventory">Inventory</a> | <a href="customers">Customers</a> | <a href="orders">Orders</a> ]
-
-</body>
-</html>
+{% endblock %}
