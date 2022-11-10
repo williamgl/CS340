@@ -1,4 +1,4 @@
-from flask import Flask, render_template, json, request
+from flask import Flask, render_template, json, request,redirect
 import os
 
 import mysql.connector
@@ -135,22 +135,28 @@ def orders():
     elif request.method == 'POST':
         mycursor = my_db.cursor()
         customer_id = request.form.get("customer_id")
-        item_id = request.form.get("item_id")
-        quantity = request.form.get("quantity")
+        #item_id = request.form.get("item_id")
+        #quantity = request.form.get("quantity")
         country_code = request.form.get("country_code")
-        item_id = int(item_id)
+        #item_id = int(item_id)
         
-        mycursor.execute("SELECT cost FROM Items WHERE item_id = %s", (item_id,))
-        item = mycursor.fetchall()
-        item_cost = item[0][0]
-        print(item_cost)
+        # mycursor.execute("SELECT cost FROM Items WHERE item_id = %s", (item_id,))
+        # item = mycursor.fetchall()
+        # item_cost = item[0][0]
+        # print(item_cost)
         
-        total_cost = int(item_cost) * int(quantity)
+        #total_cost = int(item_cost) * int(quantity)
         
-        sql2 = "INSERT INTO Orders (customer_id, total_cost, country_code_of_order) VALUES (%s, %s, %s)"
-        val2= (customer_id, total_cost,country_code)
-        mycursor.execute(sql2, val2)
+        sql1 = "INSERT INTO Orders (customer_id, total_cost, country_code_of_order) VALUES (%s, %s, %s)"
+        val1= (customer_id, 0,country_code)
+        mycursor.execute(sql1, val1)
         my_db.commit()
+        new_order_id = mycursor.lastrowid
+        
+        # sql2 = "INSERT INTO OrdersToItems (item_id, order_id, quantity_of_item) VALUES (%s, %s, %s)"
+        # val2 = (item_id, new_order_id, quantity)
+        # mycursor.execute(sql2, val2)
+        # my_db.commit()
         
         mycursor.execute("SELECT * FROM Orders")
         myresult = mycursor.fetchall()
@@ -165,7 +171,50 @@ def orders():
         countries = mycursor.fetchall()
         return render_template("orders.html", myresult=myresult,customers=customers,items=items, countries=countries)
     
-
+@app.route('/ordersToitems',methods = ['POST', 'GET'])
+def ordersToitems():
+    if (request.method == 'GET'):
+        mycursor = my_db.cursor()
+        mycursor.execute("SELECT * FROM OrdersToItems")
+        myresult = mycursor.fetchall()
+        
+        mycursor.execute("SELECT * FROM Orders")
+        orders = mycursor.fetchall()
+        
+        mycursor.execute("SELECT * FROM Customers")
+        customers = mycursor.fetchall()
+        
+        mycursor.execute("SELECT * FROM Items")
+        items = mycursor.fetchall()
+        
+        mycursor.execute("SELECT * FROM Countries")
+        countries = mycursor.fetchall()
+        return render_template("ordersToitems.html", myresult=myresult,orders=orders,customers=customers,items=items, countries=countries)
+    elif (request.method == 'POST'):
+        mycursor = my_db.cursor()
+        order_id = request.form.get("order_id")
+        item_id = request.form.get("item_id")
+        quantity = request.form.get("quantity")
+        item_id = int(item_id)
+        
+        sql1 = "INSERT INTO OrdersToItems (item_id, order_id, quantity_of_item) VALUES (%s, %s, %s)"
+        val1= (item_id, order_id,quantity)
+        mycursor.execute(sql1, val1)
+        my_db.commit()
+        
+        mycursor.execute("SELECT cost FROM Items WHERE item_id = %s", (item_id,))
+        item = mycursor.fetchall()
+        item_cost = item[0][0]
+        item_total_cost = int(item_cost) * int(quantity)
+        
+        sql2 = "UPDATE Orders SET total_cost = total_cost + %s WHERE order_id = %s"
+        val2= (item_total_cost, order_id)
+        mycursor.execute(sql2, val2)
+        my_db.commit()
+        
+        
+        return redirect(request.url)
+    
 
 # Listener
 if __name__ == "__main__":

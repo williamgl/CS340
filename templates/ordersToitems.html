@@ -21,16 +21,18 @@
         <th><a href="#">New</a></th>
         <th></th>
         <th>ID</th>
-        <th>Customer ID</th>
-        <th>total cost</th>
+        <th>Order ID</th>
+        <th>Item ID</th>
+        <th>Quantity</th>
       </tr>
       {% for item in myresult%}
       <tr>
         <td><a href="#">Edit</a></td>
         <td><a href="#">Delete</a></td>
         <td align="right" >{{item[0]}}</td>
-        <td align="right" >{{item[1]}}</td>
-        <td>${{item[2]}}</td>
+        <td align="right" >{{item[2]}}</td>
+        <td align="right">{{item[1]}}</td>
+        <td align="right">{{item[3]}}</td>
       </tr>
       {%endfor%}
     </table>
@@ -46,21 +48,24 @@
   </div>
 
     <div id="insert" style="display: block">
-        <legend><strong>Add an Order</strong></legend>
-        <form action="/orders" method="post">
+        <legend><strong>Add an Item to Order</strong></legend>
+        <form action="/ordersToitems" method="post">
           <fieldset class="fields">
-            <label> Customer ID </label> 
-            <select name="customer_id" id="ids">
-              {% for customer in customers%}
-              <option value={{customer[0]}}>{{customer[1]}} {{customer[2]}}</option>
+            <label> Order ID </label> 
+            <select name="order_id" id="ids">
+              {% for order in orders%}
+              <option value={{order[0]}}>{{order[0]}}</option>
               {%endfor%}
             </select>
-            <label> Countries </label> 
-            <select name="country_code" id="ids">
-              {% for country in countries%}
-              <option value={{country[2]}}>{{country[1]}}</option>
+            <label> Item ID </label> 
+            <select name="item_id" id="ids">
+              {% for item in items%}
+              <option value={{item[0]}}>{{item[1]}}</option>
               {%endfor%}
             </select>
+            <br>
+            <br>
+            <label> quantity </label> <input type="text" name="quantity">
           </fieldset>
         <input class="btn" type="submit" value="Add an Order">
         <input class="btn" type="button" value="Cancel">
@@ -70,11 +75,11 @@
     
     <div id="update" style="display: block">
         <legend><strong>Update Order</strong></legend>
-        <form action="/orders" method="post">
+        <form action="/ordersToitems" method="put">
           <fieldset class="fields">
             <label> Order ID </label> 
             <select name="order_id" id="ids">
-              {% for order in myresult%}
+              {% for order in orders%}
               <option value={{order[0]}}>{{order[0]}}</option>
               {%endfor%}
             </select>
