@@ -169,7 +169,61 @@ def orders():
         result = cursor.fetchall()
         return render_template("orders.j2", item=result)
 """
+@app.route('/countries', methods=['POST', 'GET'])
+def countries():
+    if request.method == 'GET':
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM Countries")
+        result = cursor.fetchall()
+        cursor.close()
+        return render_template("countries.html", countries=result)
+    
 
+@app.route('/customer_info', methods=['POST', 'GET'])
+def customer_info():
+    if request.method == 'GET':
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM Customer_Info")
+        result = cursor.fetchall()
+        cursor.close()
+        return render_template("customer_info.html", customers_info=result)
+    
+@app.route('/locations', methods=['POST', 'GET'])
+def locations():
+    if request.method == 'GET':
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM Locations")
+        result = cursor.fetchall()
+        cursor.close()
+        return render_template("locations.html", locations=result)
+    
+@app.route('/items', methods=['POST', 'GET'])
+def items():
+    if request.method == 'GET':
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM Items")
+        result = cursor.fetchall()
+        cursor.close()
+        return render_template("items.html", items=result)
+
+@app.route('/items_locations', methods=['POST', 'GET'])
+def items_locations():
+    if request.method == 'GET':
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM Items_Locations")
+        result = cursor.fetchall()
+        cursor.close()
+        return render_template("items_locations.html", items_locations=result)
+
+@app.route('/items_in_orders', methods=['POST', 'GET'])
+def items_in_orders():
+    if request.method == 'GET':
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM Items_In_Orders")
+        result = cursor.fetchall()
+        cursor.close()
+        return render_template("items_in_orders.html", items_in_orders=result)
+    
 # Listener
 if __name__ == "__main__":
     # port = int(os.environ.get('PORT', 14285))
