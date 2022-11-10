@@ -26,28 +26,13 @@
       </tr>
       <tr>
         <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >1</td>
-        <td>Sho/US-</td>
-        <td align="right" >1</td>
-        <td>33.99</td>
+          <td><a href='#'>Delete</a></td>
+        <td align="right">{{item[0]}}</td>
+        <td>{{item[1]}}</td>
+        <td align="right">{{item[2]}}</td>
+        <td>${{item[3]}}</td>
       </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >2</td>
-        <td>Clo/Lar</td>
-        <td align="right" >1</td>
-        <td >50.99</td>
-      </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >3</td>
-        <td>PC/Int</td>
-        <td align="right" >1</td>
-        <td>1250.99</td>
-      </tr>
+         {% endfor %}
     </table>
     <p>&nbsp;</p>
     </div> <!-- browse -->

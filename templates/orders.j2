@@ -26,24 +26,11 @@
       <tr>
         <td><a href="#">Edit</a></td>
         <td><a href="#">Delete</a></td>
-        <td align="right" >1</td>
-        <td align="right" >1</td>
-        <td>250.34</td>
+          <td align="right" >{{item[0]}}</td>
+        <td align="right" >{{item[1]}}</td>
+        <td>${{item[2]}}</td>
       </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >2</td>
-        <td align="right" >2</td>
-        <td>2250.34</td>
-      </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >3</td>
-        <td align="right" >3</td>
-        <td>2590.34</td>
-      </tr>
+         {%endfor%}
     </table>
     <p>&nbsp;</p>
     </div> <!-- browse -->

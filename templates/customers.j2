@@ -2,149 +2,157 @@
 <html>
 <head>
 	<meta charset="UTF=8">
-	<title>E-commerce System Homepage</title>
+	<title>Customers</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+	<script language="JavaScript">
+	function showform(dowhat) {
+		/*
+		 * four DIVS: browse, insert, update, delete
+		 * this function sets one visible the others not
+		 */
+		if(dowhat == 'insert') {
+			document.getElementById('browse').style.display = 'none';
+			document.getElementById('insert').style.display = 'block';
+			document.getElementById('edit').style.display = 'none';
+			document.getElementById('delete').style.display = 'none';
+		} else if(dowhat == 'update') {
+			document.getElementById('browse').style.display = 'none';
+			document.getElementById('insert').style.display = 'none';
+			document.getElementById('edit').style.display = 'block';
+			document.getElementById('delete').style.display = 'none';
+		} else if(dowhat == 'delete') {
+			document.getElementById('browse').style.display = 'none';
+			document.getElementById('insert').style.display = 'none';
+			document.getElementById('edit').style.display = 'none';
+			document.getElementById('delete').style.display = 'block';
+		} else if(dowhat == 'all') {
+			document.getElementById('browse').style.display = 'block';
+			document.getElementById('insert').style.display = 'block';
+			document.getElementById('edit').style.display = 'block';
+			document.getElementById('delete').style.display = 'block';
+		} else { //by default display browse
+			document.getElementById('browse').style.display = 'block';
+			document.getElementById('insert').style.display = 'none';
+			document.getElementById('edit').style.display = 'none';
+			document.getElementById('delete').style.display = 'none';
+		}
+	}
+
+	function newCustomer() {
+		showform('insert');
+	}
+
+	function updateCustomer(pid) {
+		showform('update');
+	}
+
+	function deleteCustomer(pid) {
+		showform('delete');
+	}
+
+	function browseCustomer() {
+		showform('browse');
+	}
+
+	function showAll() {
+		showform('all');
+	}
+	</script>
+
 </head>
 
-<body>
-    <div class="topNav">
-      <a class="active" href="index">Home</a>
-      <a href="inventory">Inventory</a>
-      <a href="customers">Customers</a>
-      <a href="orders">Orders</a>
-    </div>
-    <div id="browse" style="display: block">
-    <p><strong>Browse Customer Info</strong></p>
-    <table border="1" cellpadding="5">
-      <tr>
-        <th><a href="#">New</a></th>
-        <th></th>
-        <th>ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>email(Optional)</th>
-        <th>Phone(Optional)</th>
-      </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >1</td>
-        <td>Joe</td>
-        <td>Saku</td>
-        <td>saku@gmail.com</td>
-        <td>567-123-1234</td>
-      </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >2</td>
-        <td>Mary</td>
-        <td>Chu</td>
-        <td>chu@gmail.com</td>
-        <td>567-123-1235</td>
-      </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >3</td>
-        <td>Ivan</td>
-        <td>Larrence</td>
-        <td>larrence@gmail.com</td>
-        <td>567-123-1236</td>
-      </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >4</td>
-        <td>Jack</td>
-        <td>Smith</td>
-        <td>smith@gmail.com</td>
-        <td>567-123-1237</td>
-      </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >5</td>
-        <td>Mandy</td>
-        <td>Chan</td>
-        <td>chan@gmail.com</td>
-        <td>567-123-1238</td>
-      </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-        <td align="right" >6</td>
-        <td>Eric</td>
-        <td>Trump</td>
-        <td>trump@gmail.com</td>
-        <td>567-123-1239</td>
-      </tr>
-    </table>
-    <p>&nbsp;</p>
-    </div> <!-- browse -->
+<body onload="browseCustomer()">
+	<div class="topNav">
+	  <a class="active" href="index">Home</a>
+	  <a href="inventory">Inventory</a>
+	  <a href="customers">Customers</a>
+	  <a href="orders">Orders</a>
+	</div>
+	<h1>Customers</h1>
+	<div id="browse">
+		<p><a href="#" onClick="newCustomer()">Add New Customer</a> </p>
+		<table border="1" cellpadding="5">
+            <!-- Access data tuple passed from app.py -->
+            {% if customers %}
+			    <thead>
+				    <tr>
+					    <!-- Iterate through each key in the first entry to get the column name -->
+                        {% for key in customers[0].keys() %}
 
-    <div id="search" style="display: block">
-      <legend><strong>Search Customer</strong></legend>
-      <fieldset class="fields">
-        <label>Keyword: </label> <input type="text" name="keyword"><p></p>
-      </fieldset>
-      <input class="btn" type="submit" value="Search">
-  </div>
+                        <!-- Create a <th> tag with the key inside of it, this will be our header row -->
+					    <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
 
-    <div id="insert" style="display: block">
-        <legend><strong>Add Customer</strong></legend>
-        <fieldset class="fields">
-            <label> First Name </label> <input type="text" name="first_name">
-            <label> Last Name </label> <input type="text" name="last_name"><p></p>
-            <label> email(Optional) </label> <input type="text" name="email"><p></p>
-            <label> Phone(Optional) </label> <input type="text" name="phone"><p></p>
-        </fieldset>
-        <input class="btn" type="submit" value="Add a Customer">
-        <input class="btn" type="button" value="Cancel">
-        <p>&nbsp;</p>
-    </div><!-- insert -->
-    
-    <div id="update" style="display: block">
-        <legend><strong>Update Item</strong></legend>
-        <fieldset class="fields">
-            <label> ID: </label> 
-            <select name="ID" id="ids">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-            </select>
-            <label> First Name </label> <input type="text" name="first_name">
-            <label> Last Name </label> <input type="text" name="last_name"><p></p>
-            <label> email(Optional) </label> <input type="text" name="email"><p></p>
-            <label> Phone(Optional) </label> <input type="text" name="phone"><p></p>
-        </fieldset>
-        <input class="btn" type="submit" value="Update Customer">
-        <input class="btn" type="button" value="Cancel" >
-        <p>&nbsp;</p>
-    </div><!-- update -->
+                        <!-- End of this for loop -->
+                        {% endfor %}
+                    </tr>
 
-    <div id="delete" style="display: block">
-        <form id="deleteItem">
-        <legend><strong>Delete Item</strong></legend>
-        <fieldset class="fields">
-        <p>Are you sure you wish to delete the following customer?</p>
-        <label>ID:</label> 
-        <select name="ID" id="ids">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-        </select>
-        </fieldset>
-        <input class="btn" type="submit" value="Delete customer">
-        <input class="btn" type="button" value="Cancel" >
-        </form> 
-    </div><!-- delete -->
+				<tbody>
+					<!-- Now, iterate through every item in data -->{% for item in customers %}
+					    <tr>
+						    <!-- Then iterate through every key in the current item dictionary -->
+                            {% for key in item.keys() %}
+
+						    <!-- Create a <td> element with the value of that key in it -->
+						    <td> {{item[key]}} </td>
+                            {% endfor %}
+
+                            <!-- Create our edit/delete buttons -->
+						    <td><a href="edit_customer/{{item.customer_id}}" class="btn btn-default">Edit</a></td>
+						    <td><a href="delete_customer/{{item.customer_id}}" class="btn btn-default">Delete</a></td>
+
+					    </tr>
+                        {% endfor %}
+                {% endif %}
+        </table>
+	<p>&nbsp;</p>
+	</div>	<!-- browse -->
+
+	<div id="insert">
+		<!-- form to INSERT new data into customers-->
+		<form id="insertCustomer" action="/customers" method="post">
+			<legend><strong>Add Customer</strong></legend>
+			<fieldset>
+                <!-- placeholder shows ghost text, required forces an input, pattern forces input adherence -->
+				<label for="make">First name:</label>
+				<input type="text" class="form-control" id="first_name" name="first_name" pattern="[A-Za-z]{1,}" placeholder="" required>
+
+				<label for="model">Last name:</label>
+				<input type="text" class="form-control" id="last_name" name="last_name" pattern="[A-Za-z0-9]{1,}" placeholder="" required>
+                <p></p>
+				<label for="year">Email:</label>
+                <input type="text" class="form-control" id="email" name="email">
+
+				<label for="color">Phone:</label>
+				<input type="text" class="form-control" id="phone" name="phone">
+            </fieldset>
+
+            <!-- Create 'Add Customer' and 'Cancel' buttons -->
+			<input type="submit" value="Add Customer" name="Add_Customer" class="btn btn-primary" style="margin:.5rem;">
+			<input class="btn" type="button" value="Cancel" onClick="browseCustomer()">
+        </form>
+	</div><!--insert-->
+
+
+	<div id="edit">
+		<!-- form to edit data in customers-->
+		<form id="editCustomer" action="/edit_customer/{{customers[0].customer_id}}" method="post">
+			<legend><strong>Edit Customer Info</strong></legend>
+			<fieldset>
+				<input type="hidden" value="{{customers[0].customer_id}}" class="form-control" id="customerID" name="customerID" required>
+				<label for="make">first name:</label>
+				<input type="text" class="form-control" id="first_name" name="first_name" pattern="[A-Za-z]{1,}" placeholder="{{customers[0].first_name}}" required>
+				<label for="model">last name:</label>
+				<input type="text" class="form-control" id="last_name" name="last_name" pattern="[A-Za-z0-9]{1,}" placeholder="{{customers[0].last_name}}" required>
+				<label for="year">email:</label>
+                <input type="text" class="form-control" id="email" name="email" placeholder="{{customers[0].email}}" required>
+				<label for="color">phone:</label>
+				<input type="text" class="form-control" id="phone" name="phone" placeholder="{{customers[0].phone}}" required>
+			</fieldset>
+			    <input type="submit" value="Update Customer" name="Update_Customer" class="btn btn-primary" style="margin:.5rem;">
+				<input class="btn" type="button" value="Cancel" onClick="browseCustomer()" style="margin:.5rem;">
+        </form>
+	</div><!--edit-->
+
 
     <p>&nbsp;</p>
     [ <a href="index">Home</a> | <a href="inventory">Inventory</a> | <a href="customers">Customers</a> | <a href="orders">Orders</a> ]
