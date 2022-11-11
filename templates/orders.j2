@@ -2,99 +2,151 @@
 <html>
 <head>
 	<meta charset="UTF=8">
-	<title>E-commerce System Homepage</title>
+	<title>Orders</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+	<script language="JavaScript">
+	function showform(dowhat) {
+		/*
+		 * four DIVS: browse, insert, update, delete
+		 * this function sets one visible the others not
+		 */
+		if(dowhat == 'insert') {
+			document.getElementById('browse').style.display = 'none';
+			document.getElementById('insert').style.display = 'block';
+			document.getElementById('edit').style.display = 'none';
+			document.getElementById('delete').style.display = 'none';
+		} else if(dowhat == 'update') {
+			document.getElementById('browse').style.display = 'none';
+			document.getElementById('insert').style.display = 'none';
+			document.getElementById('edit').style.display = 'block';
+			document.getElementById('delete').style.display = 'none';
+		} else if(dowhat == 'delete') {
+			document.getElementById('browse').style.display = 'none';
+			document.getElementById('insert').style.display = 'none';
+			document.getElementById('edit').style.display = 'none';
+			document.getElementById('delete').style.display = 'block';
+		} else if(dowhat == 'all') {
+			document.getElementById('browse').style.display = 'block';
+			document.getElementById('insert').style.display = 'block';
+			document.getElementById('edit').style.display = 'block';
+			document.getElementById('delete').style.display = 'block';
+		} else { //by default display browse
+			document.getElementById('browse').style.display = 'block';
+			document.getElementById('insert').style.display = 'none';
+			document.getElementById('edit').style.display = 'none';
+			document.getElementById('delete').style.display = 'none';
+		}
+	}
+
+	function newOrder() {
+		showform('insert');
+	}
+
+	function updateOrder(pid) {
+		showform('update');
+	}
+
+	function deleteOrder(pid) {
+		showform('delete');
+	}
+
+	function browseOrder() {
+		showform('browse');
+	}
+
+	function showAll() {
+		showform('all');
+	}
+	</script>
+
 </head>
 
-<body>
+<body onload="browseOrder()"">
     <div class="topNav">
-      <a class="active" href="index">Home</a>
-      <a href="inventory">Inventory</a>
-      <a href="customers">Customers</a>
-      <a href="orders">Orders</a>
+        <a class="active" href="index">Home</a>
+        <a href="inventory">Inventory</a>
+        <a href="customers">Customers</a>
+        <a href="orders">Orders</a>
     </div>
-    <div id="browse" style="display: block">
-    <p><strong>Browse Items</strong></p>
+	<h1>Order</h1>
+
+	<div id="browse">
+        <p></p>
+        <p><a href="#" onClick="newOrder()">Add New Order</a> </p>
+        <p></p>
+
     <table border="1" cellpadding="5">
-      <tr>
-        <th><a href="#">New</a></th>
-        <th></th>
-        <th>ID</th>
-        <th>Customer ID</th>
-        <th>total cost</th>
-      </tr>
-      <tr>
-        <td><a href="#">Edit</a></td>
-        <td><a href="#">Delete</a></td>
-          <td align="right" >{{item[0]}}</td>
-        <td align="right" >{{item[1]}}</td>
-        <td>${{item[2]}}</td>
-      </tr>
-         {%endfor%}
+            <!-- Access data tuple passed from app.py -->
+            {% if orders %}
+			    <thead>
+				    <tr>
+					    <!-- Iterate through each key in the first entry to get the column name -->
+                        {% for key in orders[0].keys() %}
+                        <!-- Create a <th> tag with the key inside of it, this will be our header row -->
+					    <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+                        <!-- End of this for loop -->
+                        {% endfor %}
+                    </tr>
+				<tbody>
+					<!-- Now, iterate through every item in data -->{% for item in orders %}
+					    <tr>
+						    <!-- Then iterate through every key in the current item dictionary -->
+                            {% for key in item.keys() %}
+						    <!-- Create a <td> element with the value of that key in it -->
+						    <td> {{item[key]}} </td>
+                            {% endfor %}
+                            <!-- Create our edit/delete buttons -->
+						    <td><a href="edit_order/{{item.item_id}}/{{item.customer_id}}/{{item.order_id}}" class="btn btn-default">Edit</a></td>
+						    <td><a href="delete_order/{{item.order_id}}/{{item.item_id}}" class="btn btn-default">Delete</a></td>
+					    </tr>
+                        {% endfor %}
+                {% endif %}
     </table>
     <p>&nbsp;</p>
     </div> <!-- browse -->
 
-    <div id="search" style="display: block">
-      <legend><strong>Search Order</strong></legend>
-      <fieldset class="fields">
-        <label>Keyword: </label> <input type="text" name="keyword"><p></p>
-      </fieldset>
-      <input class="btn" type="submit" value="Search">
-  </div>
+	<div id="insert">
+		<!-- form to INSERT new data into Orders-->
+		<form id="insertOrder" action="/orders" method="post">
+			<legend><strong>Add Order</strong></legend>
+			<fieldset>
+                <!-- placeholder shows ghost text, required forces an input, pattern forces input adherence -->
 
-    <div id="insert" style="display: block">
-        <legend><strong>Add an Order</strong></legend>
-        <fieldset class="fields">
-            <label> Customer ID </label> <input type="text" name="customer_id"><p></p>
-            <label> Item ID </label> <input type="text" name="item_id"><p></p>
-            <label> quantity </label> <input type="text" name="quantity">
-        </fieldset>
-        <input class="btn" type="submit" value="Add an Order">
-        <input class="btn" type="button" value="Cancel">
-        <p>&nbsp;</p>
-    </div><!-- insert -->
-    
-    <div id="update" style="display: block">
-        <legend><strong>Update Order</strong></legend>
-        <fieldset class="fields">
-            <label> ID: </label> 
-            <select name="ID" id="ids">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-            </select>
-            <label> Customer ID </label> <input type="text" name="customer_id"><p></p>
-            <label> Item ID </label> <input type="text" name="item_id"><p></p>
-            <label> quantity </label> <input type="text" name="quantity">
-        </fieldset>
-        <input class="btn" type="submit" value="Update Order">
-        <input class="btn" type="button" value="Cancel" >
-        <p>&nbsp;</p>
-    </div><!-- update -->
+				<label for="model">Customer ID: </label>
+				<input type="text" class="form-control" id="customer_id" name="customer_id">
+                <p></p>
+				<label for="year">Item ID: </label>
+                <input type="text" class="form-control" id="item_id" name="item_id">
 
-    <div id="delete" style="display: block">
-        <form id="deleteOrder">
-        <legend><strong>Delete Order</strong></legend>
-        <fieldset class="fields">
-        <p>Are you sure you wish to delete the following order?</p>
-        <label>ID:</label> 
-        <select name="ID" id="ids">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-        </select>
-        </fieldset>
-        <input class="btn" type="submit" value="Delete Order">
-        <input class="btn" type="button" value="Cancel" >
-        </form> 
-    </div><!-- delete -->
+				<label for="year">Quantity: </label>
+                <input type="text" class="form-control" id="quantity" name="quantity">
+
+            </fieldset>
+
+            <!-- Create 'Add Order' and 'Cancel' buttons -->
+			<input type="submit" value="Add Order" name="Add_Order" class="btn btn-primary" style="margin:.5rem;">
+			<input class="btn" type="button" value="Cancel" onClick="browseOrder()">
+        </form>
+	</div><!--insert-->
+
+    <div id="edit">
+		<!-- form to edit data in Orders-->
+		<form id="editOrder" action="/edit_order/{{orders[0].item_id}}/{{orders[0].customer_id}}/{{orders[0].order_id}}" method="post">
+			<legend><strong>Edit Order Info</strong></legend>
+			<fieldset>
+				<input type="hidden" value="{{orders[0].customer_id}}" class="form-control" id="customer_id" name="customer_id" required>
+				<label for="make">Order ID: </label>
+				<input type="text" class="form-control" id="order_id" name="order_id" placeholder="{{orders[0].order_id}}" required>
+				<label for="model">Item ID: </label>
+				<input type="text" class="form-control" id="item_id" name="item_id" placeholder="{{orders[0].item_id}}" required>
+				<label for="year">Quantity: </label>
+				<p></p>
+                <input type="text" class="form-control" id="quantity" name="quantity" placeholder="{{orders[0].quantity}}" required>
+			</fieldset>
+			    <input type="submit" value="Update Order" name="Update_Order" class="btn btn-primary" style="margin:.5rem;">
+				<input class="btn" type="button" value="Cancel" onClick="browseOrder()" style="margin:.5rem;">
+        </form>
+	</div><!--edit-->
 
     <p>&nbsp;</p>
     [ <a href="index">Home</a> | <a href="inventory">Inventory</a> | <a href="customers">Customers</a> | <a href="orders">Orders</a> ]

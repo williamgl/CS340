@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="UTF=8">
-	<title>Edit Item</title>
+	<title>Edit Order</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
@@ -16,7 +16,7 @@
 	<p></p>
     <div>
         <table border="1" cellpadding="5">
-            <h2> The Item's Current Information: </h2>
+            <h2> The Order's Current Information: </h2>
             <!-- Access data tuple passed from app.py -->
             {% if data %}
                 <thead>
@@ -47,32 +47,25 @@
         <p></p>
 
         <div id="edit">
-            <!-- form to edit data in Items-->
-            <form id="editItem" action="/edit_item/{{data[0].item_id}}/{{data[0].location_id}}" method="post">
-                <legend><strong>Edit Item</strong></legend>
+            <!-- form to edit data in Orders-->
+            <form id="editOrder" action="/edit_order/{{data[0].item_id}}/{{data[0].customer_id}}/{{data[0].order_id}}" method="post">
+                <legend><strong>Edit Order</strong></legend>
                 <p></p>
                 <fieldset>
                     <!-- We can preset form inputs to match attributes currently stored for 'id' of person to be updated via value= and accessing our passed data tuple -->
                     <!-- Create hidden form input to store the passed 'id' of the person we are editing so we can access it easily in our 'POST' method in our app.py -->
-                    <input type="hidden" value="{{data[0].item_id}}" class="form-control" id="item_id" name="item_id" required>
-                    <label for="make">Sku: </label>
-                    <input type="text" value="{{data[0].sku}}" class="form-control" id="sku" name="sku">
-                    <label for="model">Cost: </label>
-                    <input type="text" value="{{data[0].cost}}" class="form-control" id="cost" name="cost">
+                    <input type="hidden" value="{{data[0].customer_id}}" class="form-control" id="customer_id" name="customer_id" required>
+                    <label for="make">Order ID: </label>
+                    <input type="text" value="{{data[0].order_id}}" class="form-control" id="order_id" name="order_id">
+                    <label for="model">Item ID: </label>
+                    <input type="text" value="{{data[0].item_id}}" class="form-control" id="item_id" name="item_id">
                     <p></p>
                     <label for="year">Quantity: </label>
                     <input type="text" value="{{data[0].quantity}}" class="form-control" id="quantity" name="quantity">
-                    <label for="color">Location: </label>
-                    <select class="form-control" id="location" name="location" pattern="[0-4]{1}" placeholder="" required>
-                    <!-- these are hard coded, but you can add code to make this dynamic -->
-                        <option value="0">&nbsp;</option>
-                        <option value="1">Rancho Cucamonga</option>
-                        <option value="2">Edmonton</option>
-                        <option value="3">Irvine</option>
-                    </select>
+
                 </fieldset>
-                <input type="submit" value="Edit Item" name="Edit_Item" class="btn btn-primary" style="margin:.5rem;">
-                <a href='/inventory'><input class="btn" type="button" value="Cancel"></a>
+                <input type="submit" value="Edit Order" name="Edit_Order" class="btn btn-primary" style="margin:.5rem;">
+                <a href='/orders'><input class="btn" type="button" value="Cancel"></a>
             </form>
 
 </html>

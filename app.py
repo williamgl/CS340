@@ -80,7 +80,9 @@ def delete_customer(customer_id):
 def edit_customer(customer_id):
     if request.method == "GET":
         # mySQL query to grab the info of the person with our passed id
-        query = "SELECT Customers.customer_id, first_name, last_name, email, phone FROM Customers INNER JOIN Customer_Info ON Customers.customer_id=Customer_Info.customer_id WHERE Customers.customer_id=%d;" % (customer_id, )
+        query = "SELECT Customers.customer_id, first_name, last_name, email, phone " \
+                "FROM Customers INNER JOIN Customer_Info " \
+                "ON Customers.customer_id=Customer_Info.customer_id WHERE Customers.customer_id=%d;" % (customer_id, )
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
@@ -215,15 +217,95 @@ def edit_item(item_id, location_id):
             return redirect("/inventory")
 
 
-"""
 @app.route('/orders', methods=['POST', 'GET'])
 def orders():
     if request.method == 'GET':
         cursor = mysql.connection.cursor()
-        cursor.execute("SELECT * FROM Orders")
+        cursor.execute("SELECT Orders.order_id, customer_id, item_id, quantity "
+                       "FROM Orders "
+                       "INNER JOIN Items_In_Orders ON Orders.order_id=Items_In_Orders.order_id "
+                       "ORDER BY Orders.order_id ASC;")
         result = cursor.fetchall()
-        return render_template("orders.j2", item=result)
-"""
+        cursor.close()
+        return render_template("orders.j2", orders=result)
+    if request.method == "POST":
+        # fire off if user presses the Add Person button
+        if request.form.get("Add_Order"):
+            # grab user form inputs
+            customer_id = request.form["customer_id"]
+            item_id = request.form["item_id"]
+            quantity = request.form["quantity"]
+
+            cur = mysql.connection.cursor()
+
+            query1 = "INSERT INTO Orders (customer_id) VALUES ('%s');"
+            cur.execute(query1 % (customer_id, ))
+            mysql.connection.commit()
+
+            query2 = "SELECT order_id FROM Orders WHERE customer_id='%s';"
+            cur.execute(query2 % (customer_id, ))
+            order_id = cur.fetchall()[-1]['order_id']
+
+            query3 = "INSERT INTO Items_In_Orders (order_id, item_id, quantity) VALUES (%d, '%s', '%s');"
+            cur.execute(query3 % (order_id, item_id, quantity))
+            mysql.connection.commit()
+            cur.close()
+
+            # redirect back to customers page
+            return redirect("/orders")
+
+
+@app.route("/delete_order/<int:order_id>/<int:item_id>")
+def delete_order(order_id, item_id):
+    # mySQL query to delete the person with our passed id
+    query = "DELETE FROM Items_In_Orders WHERE order_id=%d and item_id=%d;"
+    cur = mysql.connection.cursor()
+    cur.execute(query % (order_id, item_id))
+    mysql.connection.commit()
+    cur.close()
+    # redirect back to people page
+    return redirect("/orders")
+
+
+@app.route("/edit_order/<int:item_id>/<int:customer_id>/<int:order_id>", methods=["POST", "GET"])
+def edit_order(item_id, customer_id, order_id):
+    if request.method == "GET":
+        # mySQL query to grab the info of the person with our passed id
+        query = "SELECT Orders.order_id, customer_id, item_id, quantity FROM Orders " \
+                "INNER JOIN Items_In_Orders ON Orders.order_id=Items_In_Orders.order_id " \
+                "WHERE item_id=%d AND customer_id=%d AND Orders.order_id=%d;"
+        cur = mysql.connection.cursor()
+        cur.execute(query % (item_id, customer_id, order_id))
+        data = cur.fetchall()
+        cur.close()
+        # render edit_people page passing our query data and homeworld data to the edit_people template
+        return render_template("edit_order.j2", data=data)
+
+    # meat and potatoes of our update functionality
+    if request.method == "POST":
+        # fire off if user clicks the 'Edit Person' button
+        if request.form.get("Edit_Order"):
+            # grab user form inputs
+            # customer_id = request.form["customer_id"]
+            new_order_id = request.form["order_id"]
+            new_item_id = request.form["item_id"]
+            quantity = request.form["quantity"]
+
+            cur = mysql.connection.cursor()
+
+            query0 = "Update Orders SET order_id='%s' WHERE order_id=%d AND customer_id=%d;"
+            cur.execute(query0 % (new_order_id, order_id, customer_id))
+
+            query1 = "Update Items_In_Orders SET order_id='%s', item_id='%s', quantity='%s' " \
+                     "WHERE order_id=%d AND item_id=%d;"
+            cur.execute(query1 % (new_order_id, new_item_id, quantity, order_id, item_id))
+            mysql.connection.commit()
+
+            cur.close()
+
+            # redirect back to customers page
+            return redirect("/orders")
+
 
 # Listener
 if __name__ == "__main__":
