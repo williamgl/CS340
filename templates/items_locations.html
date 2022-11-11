@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block content %}
+	<h1>Items To Locations</h1>
+	<div id="browse">
+		<table border="1" cellpadding="5">
+            <!-- Access data tuple passed from app.py -->
+            {% if items_locations %}
+			    <thead>
+				    <tr>
+					    <!-- Iterate through each key in the first entry to get the column name -->
+                        {% for key in items_locations[0].keys() %}
+
+                        <!-- Create a <th> tag with the key inside of it, this will be our header row -->
+					    <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+
+                        <!-- End of this for loop -->
+                        {% endfor %}
+                    </tr>
+
+				<tbody>
+					<!-- Now, iterate through every item in data -->{% for item in items_locations %}
+					    <tr>
+						    <!-- Then iterate through every key in the current item dictionary -->
+                            {% for key in item.keys() %}
+
+						    <!-- Create a <td> element with the value of that key in it -->
+						    <td> {{item[key]}} </td>
+                            {% endfor %}
+
+					    </tr>
+                        {% endfor %}
+                {% endif %}
+        </table>
+	<p>&nbsp;</p>
+	</div>	<!-- browse -->
+
+	<div id="insert">
+		<!-- form to INSERT new data into customers-->
+		<form id="insertCustomer" action="/customers" method="post">
+			<legend><strong>Add Customer</strong></legend>
+			<fieldset>
+                <!-- placeholder shows ghost text, required forces an input, pattern forces input adherence -->
+				<label for="make">First name:</label>
+				<input type="text" class="form-control" id="first_name" name="first_name" pattern="[A-Za-z]{1,}" placeholder="" required>
+
+				<label for="model">Last name:</label>
+				<input type="text" class="form-control" id="last_name" name="last_name" pattern="[A-Za-z0-9]{1,}" placeholder="" required>
+                <p></p>
+				<label for="year">Email:</label>
+                <input type="text" class="form-control" id="email" name="email">
+
+				<label for="color">Phone:</label>
+				<input type="text" class="form-control" id="phone" name="phone">
+            </fieldset>
+
+            <!-- Create 'Add Customer' and 'Cancel' buttons -->
+			<input type="submit" value="Add Customer" name="Add_Customer" class="btn btn-primary" style="margin:.5rem;">
+			<input class="btn" type="button" value="Cancel" onClick="browseCustomer()">
+        </form>
+	</div><!--insert-->
+
+
+{% endblock %}
