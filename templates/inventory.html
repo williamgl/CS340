@@ -1,85 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF=8">
-	<title>Inventory</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-	<script language="JavaScript">
-	function showform(dowhat) {
-		/*
-		 * four DIVS: browse, insert, update, delete
-		 * this function sets one visible the others not
-		 */
-		if(dowhat == 'insert') {
-			document.getElementById('browse').style.display = 'none';
-			document.getElementById('insert').style.display = 'block';
-			document.getElementById('edit').style.display = 'none';
-			document.getElementById('delete').style.display = 'none';
-		} else if(dowhat == 'update') {
-			document.getElementById('browse').style.display = 'none';
-			document.getElementById('insert').style.display = 'none';
-			document.getElementById('edit').style.display = 'block';
-			document.getElementById('delete').style.display = 'none';
-		} else if(dowhat == 'delete') {
-			document.getElementById('browse').style.display = 'none';
-			document.getElementById('insert').style.display = 'none';
-			document.getElementById('edit').style.display = 'none';
-			document.getElementById('delete').style.display = 'block';
-		} else if(dowhat == 'all') {
-			document.getElementById('browse').style.display = 'block';
-			document.getElementById('insert').style.display = 'block';
-			document.getElementById('edit').style.display = 'block';
-			document.getElementById('delete').style.display = 'block';
-		} else { //by default display browse
-			document.getElementById('browse').style.display = 'block';
-			document.getElementById('insert').style.display = 'none';
-			document.getElementById('edit').style.display = 'none';
-			document.getElementById('delete').style.display = 'none';
-		}
-	}
-
-	function newItem() {
-		showform('insert');
-	}
-
-	function updateItem(pid) {
-		showform('update');
-	}
-
-	function deleteItem(pid) {
-		showform('delete');
-	}
-
-	function browseItem() {
-		showform('browse');
-	}
-
-	function showAll() {
-		showform('all');
-	}
-	</script>
-
-</head>
-
-<body onload="browseItem()"">
-    <div class="topNav">
-        <a class="active" href="index">Home</a>
-        <a href="inventory">Inventory</a>
-        <a href="customers">Customers</a>
-        <a href="orders">Orders</a>
-    </div>
+{% extends "layout.html" %}
+{% block content %}
 	<h1>Inventory</h1>
 
 	<div id="browse">
-
-        <div id="search" style="display: block">
-            <legend><strong>Search Item</strong></legend>
-            <fieldset class="fields">
-              <label>Keyword: </label> <input type="text" name="keyword"><p></p>
-              <input class="btn" type="submit" value="Search">
-            </fieldset>
-        </div>
-        <p></p>
+		<form id="insertItem" action="/search_inventory" method="post">
+			<div id="search" style="display: block">
+				<legend><strong>Search Item</strong></legend>
+				<fieldset class="fields">
+				  <label>Keyword: </label> <input type="text" name="keyword"><p></p>
+				  <input class="btn" type="submit" value="Search">
+				</fieldset>
+			</div>
+			<p></p>
+		</form>
+        
 
         <p><a href="#" onClick="newItem()">Add New Item</a> </p>
         <p></p>
@@ -105,8 +39,8 @@
 						    <td> {{item[key]}} </td>
                             {% endfor %}
                             <!-- Create our edit/delete buttons -->
-						    <td><a href="edit_item/{{item.item_id}}" class="btn btn-default">Edit</a></td>
-						    <td><a href="delete_item/{{item.item_id}}" class="btn btn-default">Delete</a></td>
+						    <td><a href="edit_item/{{item.item_id}}/{{item.location_id}}" class="btn btn-default">Edit</a></td>
+						    <td><a href="delete_item/{{item.item_id}}/{{item.location_id}}" class="btn btn-default">Delete</a></td>
 					    </tr>
                         {% endfor %}
                 {% endif %}
@@ -130,7 +64,7 @@
                 <input type="text" class="form-control" id="quantity" name="quantity">
 
 				<label for="color">Location: </label>
-				<select class="form-control" id="location" name="location" pattern="[0-4]{1}" placeholder="" required>
+				<select class="form-control" id="location" name="location">
 				<!-- these are hard coded, but you can add code to make this dynamic -->
 					<option value="0">&nbsp;</option>
 					<option value="1">Rancho Cucamonga</option>
@@ -147,7 +81,7 @@
 
     <div id="edit">
 		<!-- form to edit data in Items-->
-		<form id="editItem" action="/edit_item/{{items[0].item_id}}" method="post">
+		<form id="editItem" action="/edit_item/{{items[0].item_id}}/{{items[0].location_id}}" method="post">
 			<legend><strong>Edit Item Info</strong></legend>
 			<fieldset>
 				<input type="hidden" value="{{items[0].item_id}}" class="form-control" id="item_id" name="item_id" required>
@@ -172,8 +106,4 @@
         </form>
 	</div><!--edit-->
 
-    <p>&nbsp;</p>
-    [ <a href="index">Home</a> | <a href="inventory">Inventory</a> | <a href="customers">Customers</a> | <a href="orders">Orders</a> ]
-
-</body>
-</html>
+{% endblock %}

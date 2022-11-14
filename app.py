@@ -33,7 +33,7 @@ def customers():
                        "FROM Customers INNER JOIN Customer_Info ON Customers.customer_id=Customer_Info.customer_id;")
         result = cursor.fetchall()
         cursor.close()
-        return render_template("customers.j2", customers=result)
+        return render_template("customers.html", customers=result)
     # Separate out the request methods, in this case this is for a POST
     # insert a person into the bsg_people entity
     if request.method == "POST":
@@ -125,7 +125,7 @@ def inventory():
                        "ORDER BY Items.item_id ASC;")
         result = cursor.fetchall()
         cursor.close()
-        return render_template("inventory.j2", items=result)
+        return render_template("inventory.html", items=result)
     if request.method == "POST":
         # fire off if user presses the Add Person button
         if request.form.get("Add_Item"):
@@ -365,6 +365,34 @@ def items_in_orders():
         result = cursor.fetchall()
         cursor.close()
         return render_template("items_in_orders.html", items_in_orders=result)
+    
+@app.route('/search_inventory', methods=['POST', 'GET'])
+def search_inventory():
+    if request.method == 'POST':
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT Items.item_id, sku, cost, quantity, Locations.location_id, location_name "
+                       "FROM Items INNER JOIN Items_Locations ON Items.item_id=Items_Locations.item_id "
+                       "INNER JOIN Locations ON Locations.location_id=Items_Locations.location_id "
+                       "ORDER BY Items.item_id ASC;")
+        result = cursor.fetchall()
+        res = []
+        keyword = request.form["keyword"]
+        keyword = keyword.lower()
+        checkindex = set()
+        for index in range(len(result)):
+            for key, value in result[index].items():
+                value = str(value).lower()
+                if keyword in value:
+                    if index not in checkindex:
+                        res.append(result[index])
+                        checkindex.add(index)
+        if keyword == "":
+            result = result
+        else:
+            result = res
+        return render_template("inventory.html", items=result)
+        
+        
 
 
 # Listener
