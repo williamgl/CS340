@@ -48,10 +48,27 @@
                     <!-- We can preset form inputs to match attributes currently stored for 'id' of person to be updated via value= and accessing our passed data tuple -->
                     <!-- Create hidden form input to store the passed 'id' of the person we are editing so we can access it easily in our 'POST' method in our app.py -->
                     <input type="hidden" value="{{data[0].customer_id}}" class="form-control" id="customer_id" name="customer_id" required>
+
                     <label for="make">Order ID: </label>
-                    <input type="text" value="{{data[0].order_id}}" class="form-control" id="order_id" name="order_id">
+                    <select class="form-control" id="order_id" name="order_id" pattern="[0-4]{1}" placeholder="" required>
+                            {% for order_id in order_ids%}
+                                {%if order_id['order_id'] == data[0].order_id%}
+                                    <option value={{order_id['order_id']}} selected>{{order_id['order_id']}}</option>
+                                {%else%}
+                                    <option value={{order_id['order_id']}}>{{order_id['order_id']}}</option>
+                                {%endif%}
+                            {%endfor%}
+                    </select>
                     <label for="model">Item ID: </label>
-                    <input type="text" value="{{data[0].item_id}}" class="form-control" id="item_id" name="item_id">
+                    <select class="form-control" id="item_id" name="item_id" pattern="[0-4]{1}" placeholder="" required>
+                        {% for item_id in item_ids%}
+                            {%if item_id['item_id'] == data[0].item_id%}
+                                <option value={{item_id['item_id']}} selected>{{item_id['item_id']}}</option>
+                            {%else%}
+                                <option value={{item_id['item_id']}}>{{item_id['item_id']}}</option>
+                            {%endif%}
+                        {%endfor%}
+                    </select>
                     <p></p>
                     <label for="year">Quantity: </label>
                     <input type="text" value="{{data[0].quantity}}" class="form-control" id="quantity" name="quantity">
