@@ -181,9 +181,15 @@ def edit_item(item_id, location_id):
         cur = mysql.connection.cursor()
         cur.execute(query % (item_id, location_id))
         data = cur.fetchall()
+        print(data)
+        
+        query1 = "SELECT location_id, location_name FROM Locations"
+        cur = mysql.connection.cursor()
+        cur.execute(query1)
+        locations = cur.fetchall()
 
         # render edit_people page passing our query data and homeworld data to the edit_people template
-        return render_template("edit_item.j2", data=data)
+        return render_template("edit_item.j2", data=data,locations=locations)
 
     # meat and potatoes of our update functionality
     if request.method == "POST":
