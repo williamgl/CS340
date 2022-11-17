@@ -385,7 +385,8 @@ def items_in_orders():
         result = cursor.fetchall()
         cursor.close()
         return render_template("items_in_orders.html", items_in_orders=result)
-    
+
+
 @app.route('/search_inventory', methods=['POST', 'GET'])
 def search_inventory():
     if request.method == 'POST':
@@ -411,8 +412,6 @@ def search_inventory():
         else:
             result = res
         return render_template("inventory.html", items=result)
-        
-        
 
 
 # Listener
