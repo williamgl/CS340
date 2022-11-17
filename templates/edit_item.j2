@@ -49,19 +49,22 @@
                     <!-- Create hidden form input to store the passed 'id' of the person we are editing so we can access it easily in our 'POST' method in our app.py -->
                     <input type="hidden" value="{{data[0].item_id}}" class="form-control" id="item_id" name="item_id" required>
                     <label for="make">Sku: </label>
-                    <input type="text" value="{{data[0].sku}}" class="form-control" id="sku" name="sku">
+                    <input type="text" value="{{data[0].sku}}" class="form-control" id="sku" name="sku" >
                     <label for="model">Cost: </label>
-                    <input type="text" value="{{data[0].cost}}" class="form-control" id="cost" name="cost">
+                    <input type="text" value="{{data[0].cost}}" class="form-control" id="cost" name="cost" >
                     <p></p>
                     <label for="year">Quantity: </label>
                     <input type="text" value="{{data[0].quantity}}" class="form-control" id="quantity" name="quantity">
                     <label for="color">Location: </label>
                     <select class="form-control" id="location" name="location" pattern="[0-4]{1}" placeholder="" required>
                     <!-- these are hard coded, but you can add code to make this dynamic -->
-                        <option value="0">&nbsp;</option>
-                        <option value="1">Rancho Cucamonga</option>
-                        <option value="2">Edmonton</option>
-                        <option value="3">Irvine</option>
+                        {% for location in locations%}
+                            {%if location['location_id'] == data[0].location_id%}
+                                <option value={{location['location_id']}} selected>{{location['location_name']}}</option>
+                            {%else%}
+                                <option value={{location['location_id']}}>{{location['location_name']}}</option>
+                            {%endif%}
+                        {%endfor%}
                     </select>
                 </fieldset>
                 <input type="submit" value="Edit Item" name="Edit_Item" class="btn btn-primary" style="margin:.5rem;">

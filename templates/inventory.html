@@ -1,5 +1,80 @@
-{% extends "layout.html" %}
-{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF=8">
+	<title>Inventory</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+	<script language="JavaScript">
+	function showform(dowhat) {
+		/*
+		 * four DIVS: browse, insert, update, delete
+		 * this function sets one visible the others not
+		 */
+		if(dowhat == 'insert') {
+			document.getElementById('browse').style.display = 'none';
+			document.getElementById('insert').style.display = 'block';
+			document.getElementById('edit').style.display = 'none';
+			document.getElementById('delete').style.display = 'none';
+		} else if(dowhat == 'update') {
+			document.getElementById('browse').style.display = 'none';
+			document.getElementById('insert').style.display = 'none';
+			document.getElementById('edit').style.display = 'block';
+			document.getElementById('delete').style.display = 'none';
+		} else if(dowhat == 'delete') {
+			document.getElementById('browse').style.display = 'none';
+			document.getElementById('insert').style.display = 'none';
+			document.getElementById('edit').style.display = 'none';
+			document.getElementById('delete').style.display = 'block';
+		} else if(dowhat == 'all') {
+			document.getElementById('browse').style.display = 'block';
+			document.getElementById('insert').style.display = 'block';
+			document.getElementById('edit').style.display = 'block';
+			document.getElementById('delete').style.display = 'block';
+		} else { //by default display browse
+			document.getElementById('browse').style.display = 'block';
+			document.getElementById('insert').style.display = 'none';
+			document.getElementById('edit').style.display = 'none';
+			document.getElementById('delete').style.display = 'none';
+		}
+	}
+
+	function newItem() {
+		showform('insert');
+	}
+
+	function updateItem(pid) {
+		showform('update');
+	}
+
+	function deleteItem(pid) {
+		showform('delete');
+	}
+
+	function browseItem() {
+		showform('browse');
+	}
+
+	function showAll() {
+		showform('all');
+	}
+	</script>
+
+</head>
+
+<body onload="browseItem()"">
+    <div class="topNav">
+        <a class="active" href="index">Home</a>
+		<a href="inventory">Inventory</a>
+		<a href="customers">Customers</a>
+		<a href="orders">Orders</a>
+		<a class="active">SubTables</a>
+		<a href="countries">Countries</a>
+		<a href="customer_info">Customer Info</a>
+		<a href="locations">Locations</a>
+		<a href="items">Items</a>
+		<a href="items_locations">Items Locations</a>
+		<a href="items_in_orders">Items In Orders</a>
+    </div>
 	<h1>Inventory</h1>
 
 	<div id="browse">
@@ -106,4 +181,5 @@
         </form>
 	</div><!--edit-->
 
-{% endblock %}
+</body>
+</html>

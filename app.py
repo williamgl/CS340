@@ -181,9 +181,15 @@ def edit_item(item_id, location_id):
         cur = mysql.connection.cursor()
         cur.execute(query % (item_id, location_id))
         data = cur.fetchall()
+        print(data)
+        
+        query1 = "SELECT location_id, location_name FROM Locations"
+        cur = mysql.connection.cursor()
+        cur.execute(query1)
+        locations = cur.fetchall()
 
         # render edit_people page passing our query data and homeworld data to the edit_people template
-        return render_template("edit_item.j2", data=data)
+        return render_template("edit_item.j2", data=data,locations=locations)
 
     # meat and potatoes of our update functionality
     if request.method == "POST":
@@ -278,8 +284,22 @@ def edit_order(item_id, customer_id, order_id):
         cur.execute(query % (item_id, customer_id, order_id))
         data = cur.fetchall()
         cur.close()
+        
+        query1 = "SELECT order_id FROM Orders"
+        cur = mysql.connection.cursor()
+        cur.execute(query1)
+        order_ids = cur.fetchall()
+        
+        query2 = "SELECT item_id FROM Items"
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        item_ids = cur.fetchall()
+        
+        print(order_ids)
+        print(item_ids)
+        
         # render edit_people page passing our query data and homeworld data to the edit_people template
-        return render_template("edit_order.j2", data=data)
+        return render_template("edit_order.j2", data=data, order_ids=order_ids,item_ids=item_ids)
 
     # meat and potatoes of our update functionality
     if request.method == "POST":
